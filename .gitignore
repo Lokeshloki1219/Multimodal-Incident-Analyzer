@@ -1,0 +1,42 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Data files (too large for git)
+audio/data/
+images/data/
+video/data/
+pdf/data/
+text/data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Extraction scripts (not part of the project)
+extract_docs.py
+extracted_text.txt
+
+# Model files
+*.pt
+*.bin
+*.safetensors

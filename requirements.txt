@@ -1,0 +1,36 @@
+# Core dependencies
+pandas>=2.0
+numpy>=1.24
+
+# Audio pipeline
+openai-whisper>=20231117
+spacy>=3.7
+transformers>=4.30
+torch>=2.0
+torchaudio>=2.0
+
+# PDF pipeline
+pdfplumber>=0.10
+pytesseract>=0.3.10
+pdf2image>=1.16
+
+# Image pipeline
+ultralytics>=8.0
+opencv-python>=4.8
+Pillow>=10.0
+
+# Video pipeline
+# (uses opencv-python + ultralytics from above)
+imageio>=2.31
+moviepy>=1.0
+
+# Text pipeline
+nltk>=3.8
+
+# Integration + Dashboard
+streamlit>=1.28
+plotly>=5.18
+
+# LLM Summarization (bonus)
+# transformers already included above
+sentencepiece>=0.1.99
