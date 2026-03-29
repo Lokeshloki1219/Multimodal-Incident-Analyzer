@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['fire']
+
+roboflow:
+  workspace: wapplab-mxpjk
+  project: fire-kp9wu
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/wapplab-mxpjk/fire-kp9wu/dataset/2
