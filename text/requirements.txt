@@ -1,0 +1,5 @@
+nltk>=3.8
+spacy>=3.7
+transformers>=4.30
+pandas>=2.0
+numpy>=1.24

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Virtual environment
 venv/
 .venv/
@@ -40,3 +41,10 @@ extracted_text.txt
 *.pt
 *.bin
 *.safetensors
+=======
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.egg-info/
+>>>>>>> 3b04ebf (text pipeline - Student 5 (Swet Patel))

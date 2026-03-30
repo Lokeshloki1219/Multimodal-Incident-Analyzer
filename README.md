@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Multimodal Crime / Incident Report Analyzer
 
 **AI for Engineers — Group Assignment**
