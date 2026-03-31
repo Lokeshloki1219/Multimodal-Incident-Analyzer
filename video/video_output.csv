@@ -1,0 +1,13 @@
+Clip_ID,Timestamp,Frame_ID,Event_Detected,Persons_Count,Objects,Confidence
+CAVIAR_01,0:00:12,FRM_036,Person collapsing,1,1 person,0.88
+CAVIAR_01,0:00:24,FRM_072,Normal walking,2,2 persons,0.92
+CAVIAR_02,0:00:36,FRM_108,Loitering,1,"1 person, 1 bag",0.75
+CAVIAR_03,0:01:00,FRM_150,Fighting,3,3 persons,0.85
+CAVIAR_03,0:01:12,FRM_186,Running,2,2 persons,0.9
+CAVIAR_04,0:01:30,FRM_225,Normal walking,1,1 person,0.95
+CAVIAR_05,0:02:00,FRM_300,Crowd gathering,5,5 persons,0.81
+CAVIAR_06,0:02:15,FRM_337,Vehicle movement,1,"2 cars, 1 person",0.87
+CAVIAR_07,0:02:30,FRM_375,Fighting,2,2 persons,0.79
+CAVIAR_08,0:02:45,FRM_412,Person collapsing,1,1 person,0.91
+CAVIAR_09,0:03:00,FRM_450,Normal walking,3,"3 persons, 1 backpack",0.93
+CAVIAR_10,0:03:20,FRM_500,Running,1,1 person,0.86
