@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Multimodal Crime / Incident Report Analyzer
 
 **AI for Engineers — Group Assignment**
@@ -15,7 +15,7 @@
 
 ## Project Description
 
-An AI-powered Multimodal Incident Analyzer that processes five types of unstructured data — audio calls, police PDFs, scene images, CCTV video, and crime text reports — and merges them into a single structured incident report with severity classification and an interactive dashboard.
+An AI-powered Multimodal Incident Analyzer that processes five different types of unstructured data — audio calls, police PDFs, scene images, CCTV video, and crime text reports — and merges them into a single structured incident report with severity classification and an interactive dashboard.
 
 ## Setup Instructions
 
