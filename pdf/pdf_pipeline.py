@@ -461,11 +461,50 @@ def extract_text_from_pdf(pdf_path):
     return full_text.strip()
 
 
+def ocr_page_with_pymupdf(doc, page_number):
+    """
+    OCR a single PDF page by rendering it to an image via PyMuPDF's get_pixmap(),
+    then running pytesseract. Does NOT require poppler/pdf2image.
+    """
+    try:
+        import pytesseract
+        from PIL import Image
+        import io
+
+        # Set tesseract path for Windows
+        tesseract_path = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        if os.path.exists(tesseract_path):
+            pytesseract.pytesseract.tesseract_cmd = tesseract_path
+
+        page = doc[page_number]
+        # Render page at 300 DPI for good OCR quality
+        mat = __import__('fitz').Matrix(300 / 72, 300 / 72)
+        pix = page.get_pixmap(matrix=mat)
+
+        # Convert pixmap to PIL Image
+        img_data = pix.tobytes("png")
+        img = Image.open(io.BytesIO(img_data))
+
+        # Run OCR
+        text = pytesseract.image_to_string(img)
+        return text.strip()
+    except ImportError:
+        return ""
+    except Exception as e:
+        print(f"    [OCR] Error on page {page_number + 1}: {e}")
+        return ""
+
+
 def ocr_page(pdf_path, page_number):
     """Attempt OCR on a specific PDF page using pytesseract."""
     try:
         from pdf2image import convert_from_path
         import pytesseract
+
+        # Set tesseract path for Windows
+        tesseract_path = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        if os.path.exists(tesseract_path):
+            pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
         images = convert_from_path(pdf_path, first_page=page_number + 1,
                                    last_page=page_number + 1)
@@ -480,21 +519,36 @@ def ocr_page(pdf_path, page_number):
 
 
 def ocr_full_pdf(pdf_path):
-    """Attempt full OCR on the entire PDF."""
+    """Attempt full OCR on the entire PDF using PyMuPDF rendering."""
     try:
-        from pdf2image import convert_from_path
+        import fitz
         import pytesseract
+        from PIL import Image
+        import io
+
+        # Set tesseract path for Windows
+        tesseract_path = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        if os.path.exists(tesseract_path):
+            pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
         print(f"  [OCR] Running full OCR on PDF...")
-        images = convert_from_path(pdf_path)
+        doc = fitz.open(pdf_path)
         texts = []
-        for i, img in enumerate(images):
+        mat = fitz.Matrix(300 / 72, 300 / 72)
+        for i in range(doc.page_count):
+            page = doc[i]
+            pix = page.get_pixmap(matrix=mat)
+            img_data = pix.tobytes("png")
+            img = Image.open(io.BytesIO(img_data))
             text = pytesseract.image_to_string(img)
             if text.strip():
                 texts.append(text.strip())
+            if (i + 1) % 10 == 0:
+                print(f"    [OCR] Processed {i + 1}/{doc.page_count} pages...")
+        doc.close()
         return "\n".join(texts)
     except ImportError:
-        print("  [OCR] pdf2image or pytesseract not installed.")
+        print("  [OCR] pytesseract not installed.")
     except Exception as e:
         print(f"  [OCR] Full OCR error: {e}")
     return ""
@@ -626,6 +680,67 @@ def extract_officer(text, ner_persons):
         return ner_persons[0].replace('\n', ' ').strip()
 
     return "Unknown"
+
+
+def extract_department(text, ner_orgs):
+    """
+    Extract the department name from the document.
+    Tries regex patterns first, then falls back to NER organizations.
+    """
+    # Try regex patterns for department mentions
+    dept_patterns = [
+        r'Department:\s*(.+?)(?:\n|$)',
+        r'([A-Z][\w\s]+(?:Police Department|Sheriff[\u2019\'s]*\s*Office|PD|County Sheriff))',
+        r'([A-Z][\w\s]+(?:Law Enforcement|Public Safety))',
+    ]
+
+    for pattern in dept_patterns:
+        match = re.search(pattern, text)
+        if match:
+            dept = match.group(1).replace('\n', ' ').strip()
+            if len(dept) > 3 and len(dept) < 80:
+                return dept
+
+    # Fall back to NER organizations
+    if ner_orgs:
+        # Prefer org names that look like departments
+        for org in ner_orgs:
+            org_lower = org.lower()
+            if any(kw in org_lower for kw in ['police', 'sheriff', 'department', 'law']):
+                return org.replace('\n', ' ').strip()
+        return ner_orgs[0].replace('\n', ' ').strip()
+
+    return "Unknown"
+
+
+def extract_program(text, incident_type):
+    """
+    Extract the program name from the document.
+    For 1033-type documents, defaults to 'Law Enforcement Support'.
+    """
+    # Try regex patterns
+    prog_patterns = [
+        r'Program:\s*(.+?)(?:\n|$)',
+        r'Program Name:\s*(.+?)(?:\n|$)',
+        r'Subject:\s*(.+?)(?:\n|$)',
+    ]
+
+    for pattern in prog_patterns:
+        match = re.search(pattern, text)
+        if match:
+            prog = match.group(1).replace('\n', ' ').strip()
+            if len(prog) > 3 and len(prog) < 100:
+                return prog
+
+    # Default based on incident type
+    program_map = {
+        "1033 Training Proposal": "Law Enforcement Support",
+        "Equipment Inventory": "Equipment Management",
+        "Narcotics Investigation": "Narcotics Unit",
+        "Arson / Fire Investigation": "Fire Investigation Unit",
+    }
+
+    return program_map.get(incident_type, "General Operations")
 
 
 def classify_incident_type(text):
@@ -769,6 +884,7 @@ def generate_summary(text, incident_type, entities):
 def split_pdf_into_sections(pdf_path):
     """
     Split a multi-section PDF into separate document sections.
+    Uses PyMuPDF for digital text and OCR (pytesseract) for scanned pages.
     Detects boundaries by page gaps (empty pages between sections)
     and header patterns (To:, COURSE:, organization names).
     Returns list of dicts with 'text' and 'section_label'.
@@ -779,53 +895,91 @@ def split_pdf_into_sections(pdf_path):
         return []
 
     doc = fitz.open(pdf_path)
+    total_pages = doc.page_count
+    print(f"  [Split] Scanning {total_pages} pages (digital text + OCR for scanned)...")
+
     sections = []
     current_section_pages = []
     current_text_parts = []
+    digital_count = 0
+    ocr_count = 0
+    empty_count = 0
 
-    for i in range(doc.page_count):
+    for i in range(total_pages):
         page = doc[i]
         text = page.get_text().strip()
 
-        if text and len(text) > 20:
-            # Check if this page starts a new section
-            is_new_section = False
-            if current_text_parts:
-                # Gap of empty pages = new section
-                if current_section_pages and i - current_section_pages[-1] > 1:
-                    is_new_section = True
-                # "To:" header at start = new section
-                elif text.startswith("To:") or text.startswith("To :"):
-                    is_new_section = True
-                # New organization name at start = new section
-                elif any(text.startswith(org) for org in [
-                    "Lonoke", "Fort Smith", "Department of",
-                    "Sheriff", "Police Department", "Office of"
-                ]):
-                    is_new_section = True
+        # If fitz returns no/minimal text, this page is likely a scanned image → OCR it
+        if not text or len(text) <= 20:
+            ocr_text = ocr_page_with_pymupdf(doc, i)
+            if ocr_text and len(ocr_text.strip()) > 20:
+                text = ocr_text.strip()
+                ocr_count += 1
+                if (ocr_count % 10) == 0:
+                    print(f"    [OCR] Processed {ocr_count} scanned pages so far "
+                          f"(page {i+1}/{total_pages})...")
+            else:
+                # Truly empty page (blank separator, cover page, etc.)
+                empty_count += 1
+                continue
+        else:
+            digital_count += 1
 
-            if is_new_section and current_text_parts:
-                # Save current section
-                full_text = "\n".join(current_text_parts)
+        # Check if this page starts a new section
+        is_new_section = False
+        if current_text_parts:
+            # Gap of empty pages = new section
+            if current_section_pages and i - current_section_pages[-1] > 1:
+                is_new_section = True
+            # "To:" header at start = new section
+            elif text.startswith("To:") or text.startswith("To :"):
+                is_new_section = True
+            # "To Whom It May Concern" in first 200 chars
+            elif "To Whom It May Concern" in text[:200]:
+                is_new_section = True
+            # New organization name at start = new section
+            elif any(text.startswith(org) for org in [
+                "Lonoke", "Fort Smith", "Department of",
+                "Sheriff", "Police Department", "Office of"
+            ]):
+                is_new_section = True
+            # OCR'd pages often start with department headers (case-insensitive)
+            elif any(kw in text[:300].lower() for kw in [
+                "police department", "sheriff's office", "sheriff\u2019s office",
+                "department of", "county sheriff", "state of arkansas",
+                "law enforcement", "request for", "training plan",
+                "1033 program", "course:", "date:",
+                "standard operating procedure", "lesson plan",
+                "policies and procedures", "mine resistant", "mrap vehicle",
+            ]):
+                is_new_section = True
+
+        if is_new_section and current_text_parts:
+            # Save current section
+            full_text = "\n".join(current_text_parts)
+            if len(full_text) > 50:  # Only save meaningful sections
                 sections.append({
                     "text": full_text,
                     "section_label": f"Section_{len(sections)+1}_pages_{current_section_pages[0]+1}-{current_section_pages[-1]+1}"
                 })
-                current_text_parts = []
-                current_section_pages = []
+            current_text_parts = []
+            current_section_pages = []
 
-            current_text_parts.append(text)
-            current_section_pages.append(i)
+        current_text_parts.append(text)
+        current_section_pages.append(i)
 
     # Save last section
     if current_text_parts:
         full_text = "\n".join(current_text_parts)
-        sections.append({
-            "text": full_text,
-            "section_label": f"Section_{len(sections)+1}_pages_{current_section_pages[0]+1}-{current_section_pages[-1]+1}"
-        })
+        if len(full_text) > 50:
+            sections.append({
+                "text": full_text,
+                "section_label": f"Section_{len(sections)+1}_pages_{current_section_pages[0]+1}-{current_section_pages[-1]+1}"
+            })
 
     doc.close()
+    print(f"  [Split] Results: {digital_count} digital pages, {ocr_count} OCR'd pages, "
+          f"{empty_count} blank pages → {len(sections)} sections")
     return sections
 
 
@@ -939,20 +1093,47 @@ def run_pdf_pipeline():
         date = extract_date(text, entities["dates"])
         location = extract_location(text, entities["locations"])
         officer = extract_officer(text, entities["persons"])
+        department = extract_department(text, list(entities["organizations"]))
+        program = extract_program(text, incident_type)
 
         # Generate summary
         summary = generate_summary(text, incident_type, entities)
 
+        # Determine document type based on content
+        doc_type = "Training Proposal"
+        text_lower = text.lower()
+        if "standard operating procedure" in text_lower or "sop" in text_lower:
+            doc_type = "SOP"
+        elif "lesson plan" in text_lower or "course:" in text_lower:
+            doc_type = "Lesson Plan"
+        elif "policies and procedures" in text_lower:
+            doc_type = "Policy Document"
+        elif "request for" in text_lower:
+            doc_type = "Equipment Request"
+        elif "inventory" in text_lower:
+            doc_type = "Inventory Report"
+
+        # Extract key detail (first meaningful sentence from summary or text)
+        key_detail = summary.split(".")[0].strip() if summary else ""
+        if not key_detail or key_detail == "Unknown":
+            sentences = [s.strip() for s in text[:500].split(".") if len(s.strip()) > 20]
+            key_detail = sentences[0] if sentences else "Document section"
+
         results.append({
             "Report_ID": report_id,
+            "Department": department,
             "Incident_Type": incident_type,
+            "Doc_Type": doc_type,
             "Date": date,
             "Location": location,
+            "Program": program,
             "Officer": officer,
             "Summary": summary,
+            "Key_Detail": key_detail,
         })
 
-        print(f"    Type: {incident_type}")
+        print(f"    Type: {incident_type} | Doc: {doc_type}")
+        print(f"    Dept: {department} | Program: {program}")
         print(f"    Date: {date} | Location: {location}")
         print(f"    Officer: {officer}")
         print(f"    Summary: {summary[:80]}...")
@@ -961,8 +1142,9 @@ def run_pdf_pipeline():
     print(f"\n[Step 4] Exporting results to '{OUTPUT_FILE}'...")
     df = pd.DataFrame(results)
 
-    # Ensure correct column order as per assignment
-    df = df[["Report_ID", "Incident_Type", "Date", "Location", "Officer", "Summary"]]
+    # Column order per assignment spec
+    df = df[["Report_ID", "Department", "Incident_Type", "Doc_Type", "Date",
+             "Location", "Program", "Officer", "Summary", "Key_Detail"]]
 
     df.to_csv(OUTPUT_FILE, index=False, encoding="utf-8")
 
