@@ -1,11 +1,7 @@
-# images/requirements.txt
-# Student 3 — Image Analyst
-# Install with: pip install -r images/requirements.txt
-
-ultralytics>=8.0.0       # YOLOv8 object detection
-opencv-python>=4.8.0     # image preprocessing (use opencv-python-headless on servers/Colab)
-pytesseract>=0.3.10      # OCR text extraction (also needs system tesseract — see README)
-Pillow>=10.0.0           # image loading
-pandas>=2.0.0            # structured output / CSV
-numpy>=1.24.0            # array operations
-matplotlib>=3.7.0        # visualisation (optional — for notebooks)
+ultralytics>=8.0
+opencv-python>=4.8
+Pillow>=10.0
+pytesseract>=0.3.10
+transformers>=4.30
+pandas>=2.0
+numpy>=1.24
