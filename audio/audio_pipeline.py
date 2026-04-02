@@ -37,9 +37,9 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "audio_output.csv")
 
-# Maximum number of audio files to process (for prototype speed)
-# Set to None to process all files
-MAX_AUDIO_FILES = 20
+# Maximum number of audio files to process
+# Set to None to process all files in the dataset
+MAX_AUDIO_FILES = None
 
 # Urgency keyword weights — used to compute Urgency_Score
 URGENCY_KEYWORDS = {
@@ -177,11 +177,11 @@ def transcribe_audio_files(model, audio_dir):
                     "transcript": text,
                     "source": filename
                 })
-                print(f"    ✓ '{text[:80]}...'")
+                print(f"    [OK] '{text[:80]}...'")
             else:
-                print(f"    ⚠ Empty transcript, skipping.")
+                print(f"    [!] Empty transcript, skipping.")
         except Exception as e:
-            print(f"    ✗ Error: {e}")
+            print(f"    [X] Error: {e}")
 
     return transcripts
 
@@ -486,7 +486,10 @@ def run_audio_pipeline():
 
     # Display summary
     print("\n--- Output Preview ---")
-    print(df.to_string(index=False, max_colwidth=50))
+    try:
+        print(df.to_string(index=False, max_colwidth=50))
+    except UnicodeEncodeError:
+        print(df.to_string(index=False, max_colwidth=50).encode('ascii', 'replace').decode('ascii'))
 
     return df
 
