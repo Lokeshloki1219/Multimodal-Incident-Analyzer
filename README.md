@@ -267,4 +267,4 @@ Missing modality data is filled with context-aware descriptions (e.g., "No polic
 
 ## 📜 License
 
-This project was developed as part of the AI for Engineers course at the University of Central Missouri, Spring 2026.
+This project was developed as part of the AI for Engineers course at the University of Houston, Spring 2026.
