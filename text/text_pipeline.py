@@ -1,5 +1,5 @@
 """
-Text/NLP Pipeline — Student 5 (Swet Patel)
+Text/NLP Pipeline — Student 5 (Swet Doshi)
 
 Multimodal Crime / Incident Report Analyzer
 
@@ -37,10 +37,13 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "text_output.csv")
 
-# Maximum number of articles to process
-MAX_ARTICLES = 120
+# Maximum number of articles to process (None = all)
+MAX_ARTICLES = None
 
 # Zero-shot classification labels
+# Aligned with assignment requirement: "topic classification (accident / fire / theft / disturbance)"
+# Removed "Police Operation" — too generic; most crime tweets mention police,
+# causing 70% of records to land in this catch-all category.
 TOPIC_LABELS = [
     "Murder / Homicide",
     "Robbery / Theft",
@@ -53,8 +56,10 @@ TOPIC_LABELS = [
     "Public Disturbance",
     "Sexual Assault",
     "Gang Violence",
-    "Police Operation",
+    "Shooting",
+    "Law Enforcement / Policing",
 ]
+
 
 # Sample news articles for fallback
 SAMPLE_ARTICLES = [
@@ -191,7 +196,7 @@ def load_spacy_model():
 def extract_entities(nlp, text):
     """
     Extract key entities from text using spaCy NER.
-    Returns formatted string of unique entities.
+    Returns (formatted_string, location_list) tuple.
     """
     doc = nlp(text[:2000])  # Limit text length
 
@@ -220,7 +225,58 @@ def extract_entities(nlp, text):
     if orgs:
         parts.append("Orgs: " + ", ".join(orgs))
 
-    return "; ".join(parts) if parts else "No key entities found"
+    formatted = "; ".join(parts) if parts else "No key entities found"
+    return formatted, locations
+
+
+def extract_location_entity(ner_locations, place_info=None):
+    """
+    Extract the primary location entity for the Location_Entity column.
+    Uses NER locations and optionally the tweet's place field.
+    """
+    # Prefer tweet place data (from CrimeReport dataset)
+    if place_info:
+        return place_info
+
+    # Use NER-extracted locations
+    if ner_locations:
+        return ", ".join(ner_locations[:2])
+
+    return "Unknown"
+
+
+def classify_severity(text, topic):
+    """
+    Classify incident severity as High / Medium / Low.
+    Based on keyword presence and topic type.
+    """
+    text_lower = text.lower()
+
+    high_keywords = [
+        "killed", "dead", "murder", "homicide", "shot", "shooting",
+        "stabbed", "fatal", "critical", "died", "death", "armed",
+        "hostage", "kidnap", "carjack", "explosion"
+    ]
+    medium_keywords = [
+        "injured", "arrested", "robbery", "assault", "theft",
+        "burglary", "fight", "drug", "seized", "fire", "arson",
+        "crash", "accident", "suspect"
+    ]
+
+    high_topics = ["Murder / Homicide", "Shooting", "Gang Violence",
+                   "Kidnapping / Missing Person", "Sexual Assault"]
+    medium_topics = ["Robbery / Theft", "Assault / Violence", "Arson / Fire",
+                     "Drug Crime"]
+
+    high_score = sum(1 for kw in high_keywords if kw in text_lower)
+    med_score = sum(1 for kw in medium_keywords if kw in text_lower)
+
+    if high_score >= 2 or topic in high_topics:
+        return "High"
+    elif med_score >= 2 or topic in medium_topics:
+        return "Medium"
+    else:
+        return "Low"
 
 
 # ============================================================================
@@ -252,19 +308,10 @@ def classify_topic(classifier, text, title=""):
     """
     combined = f"{title}. {text[:500]}" if title else text[:500]
 
-    CONFIDENCE_THRESHOLD = 0.55  # add this near your other config constants at the top
-
     if classifier is not None:
         try:
             result = classifier(combined, TOPIC_LABELS, multi_label=False)
-            top_label = result["labels"][0]
-            top_score = result["scores"][0]
-
-            print(f"    [ZeroShot] {top_label} ({top_score:.2f})")  # helpful for debugging
-
-            if top_score >= CONFIDENCE_THRESHOLD:
-                return top_label
-            # else fall through to keyword fallback below
+            return result["labels"][0]
         except Exception as e:
             print(f"    [ZeroShot] Error: {e}")
 
@@ -281,11 +328,11 @@ def classify_topic(classifier, text, title=""):
         "Arson / Fire": ["arson", "fire", "blaze", "burned", "accelerant"],
         "Gang Violence": ["gang", "shootout", "territory", "rival"],
         "Sexual Assault": ["sexual assault", "rape", "molest"],
-        "Police Operation": ["police operation", "swat", "sting operation", "undercover operation"],
+        "Police Operation": ["police operation", "raid", "seized", "bust", "arrested"],
         "Public Disturbance": ["disturbance", "riot", "protest", "unrest"],
     }
 
-    best_topic = "Public Disturbance"
+    best_topic = "General Crime"
     best_score = 0
 
     for topic, keywords in keyword_map.items():
@@ -296,29 +343,6 @@ def classify_topic(classifier, text, title=""):
 
     return best_topic
 
-def override_police_label(topic, text):
-    if topic != "Police Operation":
-        return topic
-
-    text_lower = text.lower()
-
-    override_rules = [
-        ("Kidnapping / Missing Person", ["kidnap", "abduct", "missing person", "hostage", "ransom"]),
-        ("Robbery / Theft",            ["robbery", "bank robbery", "robbed", "theft", "stolen", "heist"]),
-        ("Murder / Homicide",          ["murder", "homicide", "killed", "shot dead", "fatally"]),
-        ("Assault / Violence",         ["assault", "stabbed", "beaten", "attack", "shooting"]),
-        ("Drug Crime",                 ["drug", "heroin", "cocaine", "narcotics", "overdose"]),
-        ("Arson / Fire",               ["fire", "arson", "blaze", "burned"]),
-        ("Traffic Accident",           ["accident", "crash", "hit-and-run", "collision"]),
-        ("Gang Violence",              ["gang", "shootout", "rival"]),
-        ("Fraud / White-collar Crime", ["fraud", "scam", "ponzi", "embezzl"]),
-    ]
-
-    for label, keywords in override_rules:
-        if any(kw in text_lower for kw in keywords):
-            return label
-
-    return topic
 
 # ============================================================================
 # STEP 4: SENTIMENT ANALYSIS
@@ -361,52 +385,6 @@ def analyze_sentiment(classifier, text):
     neg_count = sum(1 for w in negative_words if w in text_lower)
     return "Negative" if neg_count >= 2 else "Neutral"
 
-# ============================================================================
-# STEP 4B: SEVERITY CLASSIFICATION
-# ============================================================================
-
-def classify_severity(text, topic):
-    text = str(text).lower()
-    topic = str(topic).lower()
-
-    high_keywords = [
-        "dead", "killed", "murder", "shooting",
-        "fire", "kidnapped", "injured", "fatal"
-    ]
-
-    medium_keywords = [
-        "robbery", "theft", "assault",
-        "fraud", "drug", "police operation"
-    ]
-
-    # High severity
-    if any(word in text for word in high_keywords):
-        return "High"
-
-    if topic in [
-        "murder / homicide",
-        "sexual assault",
-        "gang violence",
-        "kidnapping / missing person",
-        "arson / fire"
-    ]:
-        return "High"
-
-    # Medium severity
-    if any(word in text for word in medium_keywords):
-        return "Medium"
-
-    if topic in [
-        "robbery / theft",
-        "drug crime",
-        "traffic accident",
-        "assault / violence",
-        "police operation"
-    ]:
-        return "Medium"
-
-    return "Low"
-
 
 # ============================================================================
 # STEP 5: LOAD TEXT DATA
@@ -426,10 +404,18 @@ def load_jsonl_file(file_path):
                     obj = json.loads(line)
                     text = obj.get('text', '')
                     if text and len(text) > 50:
+                        # Extract place info from CrimeReport tweet format
+                        place_info = None
+                        place_obj = obj.get('place')
+                        if place_obj and isinstance(place_obj, dict):
+                            place_info = place_obj.get('full_name', '')
+
                         articles.append({
                             "title": "",
                             "text": text,
-                            "source": "CrimeReport"
+                            "source": "CrimeReport",
+                            "place": place_info,
+                            "created_at": obj.get('created_at', ''),
                         })
                 except json.JSONDecodeError:
                     continue
@@ -490,53 +476,11 @@ def load_text_data():
                     except Exception as e:
                         print(f"[Text] Error loading {f}: {e}")
 
-    # if articles:
-    #     # Limit and return
-    #     if MAX_ARTICLES and len(articles) > MAX_ARTICLES:
-    #         articles = articles[:MAX_ARTICLES]
-    #         print(f"[Text] Limited to {MAX_ARTICLES} articles for prototype.")
-    #     return articles
-
     if articles:
-        print(f"[Text] Total loaded before cleaning: {len(articles)}")
-
-        # Remove null / empty text
-        articles = [
-            article for article in articles
-            if article.get("text") and len(article.get("text").strip()) > 0
-        ]
-
-        # Remove retweets / repost-style rows
-        articles = [
-            article for article in articles
-            if not article["text"].strip().startswith("RT")
-        ]
-
-        # Remove duplicates based on text
-        seen_texts = set()
-        unique_articles = []
-
-        for article in articles:
-            text = article["text"]
-
-            # normalize text for better duplicate removal
-            normalized_text = text.lower().strip()
-            normalized_text = re.sub(r"http\S+|www\S+", "", normalized_text)
-            normalized_text = re.sub(r"\s+", " ", normalized_text)
-
-            if normalized_text not in seen_texts:
-                unique_articles.append(article)
-                seen_texts.add(normalized_text)
-
-        articles = unique_articles
-
-        print(f"[Text] After cleaning: {len(articles)}")
-
-        # Apply max article limit AFTER cleaning
+        # Limit and return
         if MAX_ARTICLES and len(articles) > MAX_ARTICLES:
             articles = articles[:MAX_ARTICLES]
-            print(f"[Text] Limited to {MAX_ARTICLES} cleaned articles.")
-
+            print(f"[Text] Limited to {MAX_ARTICLES} articles for prototype.")
         return articles
 
     # Fall back to sample data
@@ -559,7 +503,7 @@ def run_text_pipeline():
     5. Export to CSV
     """
     print("=" * 70)
-    print("TEXT/NLP PIPELINE — Student 5 (Swet Patel)")
+    print("TEXT/NLP PIPELINE — Student 5 (Swet Doshi)")
     print("Multimodal Crime / Incident Report Analyzer")
     print("=" * 70)
 
@@ -594,38 +538,47 @@ def run_text_pipeline():
         # Preprocess
         clean_text, tokens = preprocess_text(text)
 
-        # Extract entities
-        entities = extract_entities(nlp, clean_text)
+        # Extract entities (now returns tuple)
+        entities_str, ner_locations = extract_entities(nlp, clean_text)
+
+        # Extract location entity (from NER + tweet place data)
+        place_info = article.get("place", None)
+        location_entity = extract_location_entity(ner_locations, place_info)
 
         # Classify topic
         topic = classify_topic(topic_classifier, clean_text, title)
 
+        # Derive Crime_Type from Topic (assignment Table 7 requires this)
+        crime_type = topic  # Topic is already the crime classification
+
         # Analyze sentiment
         sentiment = analyze_sentiment(sentiment_classifier, clean_text)
 
-        # Severity 
-        severity = classify_severity(clean_text, topic)
+        # Classify severity
+        severity_label = classify_severity(clean_text, topic)
 
         results.append({
             "Text_ID": text_id,
             "Source": source,
             "Raw_Text": text[:300],  # Original unprocessed text (truncated for CSV)
+            "Crime_Type": crime_type,
+            "Location_Entity": location_entity,
             "Sentiment": sentiment,
-            "Entities": entities,
+            "Entities": entities_str,
             "Topic": topic,
-            "Severity": severity,
+            "Severity_Label": severity_label,
         })
 
-        print(f"    Topic: {topic} | Sentiment: {sentiment}")
-        print(f"    Entities: {entities[:70]}...")
-        print(f"    Severity: {severity}")
+        print(f"    Topic: {topic} | Crime: {crime_type} | Severity: {severity_label}")
+        print(f"    Location: {location_entity} | Sentiment: {sentiment}")
 
     # Step 4: Export to CSV
     print(f"\n[Step 4] Exporting results to '{OUTPUT_FILE}'...")
     df = pd.DataFrame(results)
 
-    # Ensure correct column order as per assignment
-    df = df[["Text_ID", "Source", "Raw_Text", "Sentiment", "Entities", "Topic", "Severity"]]
+    # Column order per assignment spec
+    df = df[["Text_ID", "Source", "Raw_Text", "Crime_Type", "Location_Entity",
+             "Sentiment", "Entities", "Topic", "Severity_Label"]]
 
     df.to_csv(OUTPUT_FILE, index=False, encoding="utf-8")
 

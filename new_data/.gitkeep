@@ -1,0 +1,2 @@
+# This file ensures the new_data/ folder is tracked by Git.
+# Drop files here for real-time processing by realtime_monitor.py

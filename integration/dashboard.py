@@ -29,9 +29,9 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 FINAL_CSV = os.path.join(SCRIPT_DIR, "final_incidents.csv")
 
 
-@st.cache_data
+@st.cache_data(ttl=10)
 def load_data():
-    """Load the integrated dataset."""
+    """Load the integrated dataset. TTL=10s enables real-time refresh."""
     if os.path.exists(FINAL_CSV):
         return pd.read_csv(FINAL_CSV)
 
@@ -79,6 +79,32 @@ st.divider()
 # ============================================================================
 # SIDEBAR FILTERS
 # ============================================================================
+
+# Real-time refresh controls
+st.sidebar.header("⚡ Real-Time")
+
+# Manual refresh button
+if st.sidebar.button("🔄 Refresh Now", use_container_width=True):
+    st.cache_data.clear()
+    st.rerun()
+
+# Show real-time monitor status
+monitor_lock = os.path.join(SCRIPT_DIR, ".processing.lock")
+new_data_dir = os.path.join(os.path.dirname(SCRIPT_DIR), "new_data")
+if os.path.exists(new_data_dir):
+    pending = len([f for f in os.listdir(new_data_dir)
+                   if not f.startswith('.') and f != '_processed'
+                   and os.path.isfile(os.path.join(new_data_dir, f))])
+    if os.path.exists(monitor_lock):
+        st.sidebar.warning("⏳ Processing file...")
+    elif pending > 0:
+        st.sidebar.info(f"📂 {pending} file(s) pending")
+    else:
+        st.sidebar.success("✅ Monitor ready")
+else:
+    st.sidebar.caption("📁 new_data/ folder not created yet")
+
+st.sidebar.markdown("---")
 
 st.sidebar.header("🎛️ Filters")
 
@@ -303,6 +329,14 @@ with tab5:
 # ============================================================================
 
 st.divider()
+
+# Show last update time
+if os.path.exists(FINAL_CSV):
+    mod_time = os.path.getmtime(FINAL_CSV)
+    from datetime import datetime
+    last_updated = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d %H:%M:%S')
+    st.caption(f"📅 Dataset last updated: {last_updated} | Auto-refresh every 10s")
+
 st.markdown("""
 <div style="text-align: center; color: #9ca3af; font-size: 0.85rem;">
     <p>Multimodal Crime / Incident Report Analyzer | AI for Engineers - Spring 2026</p>
