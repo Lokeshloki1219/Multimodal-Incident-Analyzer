@@ -1,0 +1,130 @@
+Incident_ID,Incident_Theme,Audio_Event,Audio_Location,Audio_Sentiment,Audio_Urgency,Image_Scene,Image_Objects,Image_Confidence,Severity,Text_Crime_Type,Text_Location,Text_Sentiment,Text_Severity,Text_Source,Video_Event,Video_Clip,Video_Timestamp,Video_Objects,Video_Confidence,PDF_Doc_Type,PDF_Department,PDF_Date,PDF_Location,PDF_Program,PDF_Officer
+INC_001,Fire / Arson,Shooting / gunfire,"Panama City, Fla.",Distressed,1.0,Fire Scene,smoke (0.55),0.55,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_002,Fire / Arson,Shooting / gunfire,"Greeleyville, Williamsburg County",Distressed,1.0,Fire Scene,"fire, smoke, fire (0.68)",0.68,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_003,Fire / Arson,Shooting / gunfire,"Tucson, Ariz., U.S.",Distressed,0.99,Fire Scene,"fire, fire, smoke, smoke, fire (0.43)",0.43,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_004,Fire / Arson,Building fire / trapped persons,"Hyattsville, Md., Prince George’s County",Distressed,0.8,Fire Scene,smoke (0.61),0.61,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_005,Fire / Arson,Shooting / gunfire,Unknown,Distressed,1.0,Fire Scene,fire (0.57),0.57,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_006,Fire / Arson,Shooting / gunfire,"Panama City, Fla.",Distressed,1.0,Fire Scene,"fire, smoke (0.68)",0.68,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_007,Fire / Arson,Shooting / gunfire,"Greeleyville, Williamsburg County",Distressed,1.0,Fire Scene,"smoke, smoke (0.47)",0.47,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_008,Fire / Arson,Shooting / gunfire,"Tucson, Ariz., U.S.",Distressed,0.99,Fire Scene,"smoke, smoke, smoke, smoke (0.69)",0.69,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_009,Fire / Arson,Building fire / trapped persons,"Hyattsville, Md., Prince George’s County",Distressed,0.8,Fire Scene,smoke (0.75),0.75,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_010,Fire / Arson,Shooting / gunfire,Unknown,Distressed,1.0,Fire Scene,"smoke, fire, fire, fire (0.46)",0.46,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_011,Fire / Arson,Shooting / gunfire,"Panama City, Fla.",Distressed,1.0,Fire Scene,"fire, fire, fire (0.44)",0.44,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_012,Fire / Arson,Shooting / gunfire,"Greeleyville, Williamsburg County",Distressed,1.0,Fire Scene,"smoke, smoke (0.50)",0.5,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_013,Fire / Arson,Shooting / gunfire,"Tucson, Ariz., U.S.",Distressed,0.99,Fire Scene,"fire, fire, fire, fire, smoke (0.81)",0.81,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_014,Fire / Arson,Building fire / trapped persons,"Hyattsville, Md., Prince George’s County",Distressed,0.8,Fire Scene,"fire, fire, smoke, fire, fire, fire, fire, smoke, smoke (0.54)",0.54,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_015,Robbery / Theft,Robbery / theft,"Volusia County, Fla.",Distressed,1.0,N/A,N/A,N/A,High,Robbery / Theft,Unknown,Negative,Medium,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_016,Shooting / Gunfire,N/A,N/A,N/A,N/A,N/A,N/A,N/A,High,Shooting,"Hoover, AL",Negative,High,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_017,Shooting / Gunfire,N/A,N/A,N/A,N/A,N/A,N/A,N/A,High,Shooting,Unknown,Negative,High,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_018,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:01,1 person,0.53,N/A,N/A,N/A,N/A,N/A,N/A
+INC_019,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:02,1 person,0.65,N/A,N/A,N/A,N/A,N/A,N/A
+INC_020,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:04,1 backpack,0.26,N/A,N/A,N/A,N/A,N/A,N/A
+INC_021,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:05,1 person,0.54,N/A,N/A,N/A,N/A,N/A,N/A
+INC_022,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:06,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_023,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:08,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_024,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:09,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_025,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:10,1 person,0.41,N/A,N/A,N/A,N/A,N/A,N/A
+INC_026,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:11,1 person,0.56,N/A,N/A,N/A,N/A,N/A,N/A
+INC_027,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_02,00:12,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_028,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Fighting,CAVIAR_03,00:01,3 persons,0.6,N/A,N/A,N/A,N/A,N/A,N/A
+INC_029,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_03,00:06,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_030,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Fighting,CAVIAR_03,00:07,2 persons,0.6,N/A,N/A,N/A,N/A,N/A,N/A
+INC_031,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_03,00:08,1 person,0.35,N/A,N/A,N/A,N/A,N/A,N/A
+INC_032,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_03,00:12,1 person,0.56,N/A,N/A,N/A,N/A,N/A,N/A
+INC_033,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Fighting,CAVIAR_03,00:15,2 persons,0.41,N/A,N/A,N/A,N/A,N/A,N/A
+INC_034,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_03,00:21,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_035,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Fighting,CAVIAR_03,00:22,1 person,0.76,N/A,N/A,N/A,N/A,N/A,N/A
+INC_036,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_03,00:23,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_037,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_03,00:28,1 person,0.56,N/A,N/A,N/A,N/A,N/A,N/A
+INC_038,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:02,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_039,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:03,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_040,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:04,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_041,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:12,1 person,0.55,N/A,N/A,N/A,N/A,N/A,N/A
+INC_042,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:13,1 person,0.36,N/A,N/A,N/A,N/A,N/A,N/A
+INC_043,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:16,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_044,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:17,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_045,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:18,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_046,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:19,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_047,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_04,00:20,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_048,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Fighting,CAVIAR_05,00:01,1 person,0.42,N/A,N/A,N/A,N/A,N/A,N/A
+INC_049,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:04,1 car,0.28,N/A,N/A,N/A,N/A,N/A,N/A
+INC_050,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:05,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_051,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:06,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_052,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:08,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_053,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:09,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_054,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:10,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_055,Assault / Fighting,Assault / fighting,Unknown,Distressed,0.99,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:12,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_056,Assault / Fighting,Assault / fighting,"Arizona City, Ariz.",Distressed,0.78,N/A,N/A,N/A,High,Assault / Violence,Pakistan,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:13,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_057,Assault / Fighting,Assault / fighting,Unknown,Distressed,1.0,N/A,N/A,N/A,High,Assault / Violence,Unknown,Negative,Medium,,Aggressive posturing,CAVIAR_05,00:18,1 person,0.26,N/A,N/A,N/A,N/A,N/A,N/A
+INC_058,1033 Training Proposal,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,1033 Training Proposal,Fort Smith Police Department,"January 19, 2015",Hot Springs Airport.,MRAP Operations,Ofc. Eric Wacaster
+INC_059,1033 Training Proposal,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,1033 Training Proposal,Jacksonville AR Police Department,"January 14, 2015",the United States  Government,Law Enforcement Support,Brett Hibbs  Date
+INC_060,1033 Training Proposal,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,1033 Training Proposal,Lonoke County Sheriff’s Office,1 December 2015,Lonoke County Sheriff’s Office,Law Enforcement Support,David Bufford
+INC_061,1033 Training Proposal,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,1033 Training Proposal,Lonoke County Sheriff’s Office,Unknown,Lonoke County Sheriff’s Office,Law Enforcement Support,John Staley - Sheriff
+INC_062,1033 Training Proposal,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,1033 Training Proposal,Lonoke County Sheriff’s Office,Unknown,Lonoke County Sheriff’s Office,Law Enforcement Support,John Staley - Sheriff
+INC_063,Traffic Accident,Road accident / collision,Orange County,Distressed,0.8,N/A,N/A,N/A,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_064,Traffic Accident,Road accident / collision,Orange County,Distressed,0.8,N/A,N/A,N/A,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_065,Traffic Accident,Road accident / collision,Orange County,Distressed,0.8,N/A,N/A,N/A,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_066,Traffic Accident,Road accident / collision,Orange County,Distressed,0.8,N/A,N/A,N/A,High,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_067,Traffic Accident,Road accident / collision,"Molokai, Hawaii",Calm,0.6,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_068,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:01,1 person,0.77,N/A,N/A,N/A,N/A,N/A,N/A
+INC_069,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:03,2 persons,0.78,N/A,N/A,N/A,N/A,N/A,N/A
+INC_070,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:09,1 backpack,0.33,N/A,N/A,N/A,N/A,N/A,N/A
+INC_071,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:10,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_072,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:11,2 persons,0.42,N/A,N/A,N/A,N/A,N/A,N/A
+INC_073,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:12,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_074,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:26,2 persons,0.38,N/A,N/A,N/A,N/A,N/A,N/A
+INC_075,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:38,1 person,0.7,N/A,N/A,N/A,N/A,N/A,N/A
+INC_076,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:39,2 persons,0.71,N/A,N/A,N/A,N/A,N/A,N/A
+INC_077,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_08,00:40,1 person,0.63,N/A,N/A,N/A,N/A,N/A,N/A
+INC_078,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person collapsing,CAVIAR_09,00:01,2 persons,0.33,N/A,N/A,N/A,N/A,N/A,N/A
+INC_079,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person collapsing,CAVIAR_09,00:02,2 persons,0.74,N/A,N/A,N/A,N/A,N/A,N/A
+INC_080,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:03,1 person,0.67,N/A,N/A,N/A,N/A,N/A,N/A
+INC_081,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:07,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_082,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:08,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_083,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:09,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_084,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:10,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_085,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:18,1 person,0.57,N/A,N/A,N/A,N/A,N/A,N/A
+INC_086,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:19,1 person,0.55,N/A,N/A,N/A,N/A,N/A,N/A
+INC_087,Medical Emergency,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,N/A,N/A,N/A,N/A,N/A,Person lying down,CAVIAR_09,00:20,1 person,0.54,N/A,N/A,N/A,N/A,N/A,N/A
+INC_088,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_01,00:05,3 persons,0.58,N/A,N/A,N/A,N/A,N/A,N/A
+INC_089,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_01,00:06,2 persons,0.5,N/A,N/A,N/A,N/A,N/A,N/A
+INC_090,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_01,00:07,1 person,0.47,N/A,N/A,N/A,N/A,N/A,N/A
+INC_091,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_01,00:32,1 person,0.59,N/A,N/A,N/A,N/A,N/A,N/A
+INC_092,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_01,00:40,1 person,0.59,N/A,N/A,N/A,N/A,N/A,N/A
+INC_093,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_01,00:41,1 person,0.71,N/A,N/A,N/A,N/A,N/A,N/A
+INC_094,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_07,00:15,1 person,0.3,N/A,N/A,N/A,N/A,N/A,N/A
+INC_095,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_10,00:02,1 person,0.4,N/A,N/A,N/A,N/A,N/A,N/A
+INC_096,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_10,00:03,2 persons,0.57,N/A,N/A,N/A,N/A,N/A,N/A
+INC_097,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_10,00:04,1 person,0.8,N/A,N/A,N/A,N/A,N/A,N/A
+INC_098,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_10,00:12,2 persons,0.3,N/A,N/A,N/A,N/A,N/A,N/A
+INC_099,Public Disturbance,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Low,Public Disturbance,Delhi,Negative,Low,,Loitering,CAVIAR_10,00:13,1 person,0.57,N/A,N/A,N/A,N/A,N/A,N/A
+INC_100,Drug Crime,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,Drug Crime,Baltimore,Positive,Medium,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_101,Drug Crime,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Medium,Drug Crime,Unknown,Negative,Medium,,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+INC_102,Surveillance / Normal,Unknown incident,"Indianapolis, Ind.",Distressed,0.8,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Chicago,Negative,Low,,Normal activity,CAVIAR_01,00:01,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_103,Surveillance / Normal,Unknown incident,Unknown,Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal walking,CAVIAR_01,00:02,2 persons,0.42,N/A,N/A,N/A,N/A,N/A,N/A
+INC_104,Surveillance / Normal,Unknown incident,Green Lake County,Distressed,0.7,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal walking,CAVIAR_01,00:03,3 persons,0.37,N/A,N/A,N/A,N/A,N/A,N/A
+INC_105,Surveillance / Normal,Unknown incident,Ohio,Distressed,0.45,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_01,00:36,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_106,Surveillance / Normal,Unknown incident,"Omaha, Neb.",Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Suspicious object,CAVIAR_06,00:01,2 persons,0.66,N/A,N/A,N/A,N/A,N/A,N/A
+INC_107,Surveillance / Normal,Unknown incident,Ore.,Distressed,0.48,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Redbridge,Negative,Low,,Suspicious object,CAVIAR_06,00:02,1 car,0.43,N/A,N/A,N/A,N/A,N/A,N/A
+INC_108,Surveillance / Normal,Unknown incident,"Indianapolis, Ind.",Distressed,0.8,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Suspicious object,CAVIAR_06,00:06,4 persons,0.69,N/A,N/A,N/A,N/A,N/A,N/A
+INC_109,Surveillance / Normal,Unknown incident,Unknown,Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Positive,Low,,Suspicious object,CAVIAR_06,00:07,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_110,Surveillance / Normal,Unknown incident,Green Lake County,Distressed,0.7,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Suspicious object,CAVIAR_06,00:19,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_111,Surveillance / Normal,Unknown incident,Ohio,Distressed,0.45,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Delhi,Negative,Low,,Suspicious object,CAVIAR_06,00:20,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_112,Surveillance / Normal,Unknown incident,"Omaha, Neb.",Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Chicago,Negative,Low,,Suspicious object,CAVIAR_06,00:35,1 person,0.31,N/A,N/A,N/A,N/A,N/A,N/A
+INC_113,Surveillance / Normal,Unknown incident,Ore.,Distressed,0.48,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Unknown,Negative,Low,,Suspicious object,CAVIAR_06,00:36,3 persons,0.79,N/A,N/A,N/A,N/A,N/A,N/A
+INC_114,Surveillance / Normal,Unknown incident,"Indianapolis, Ind.",Distressed,0.8,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Suspicious object,CAVIAR_06,00:56,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_115,Surveillance / Normal,Unknown incident,Unknown,Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Suspicious object,CAVIAR_06,00:57,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_116,Surveillance / Normal,Unknown incident,Green Lake County,Distressed,0.7,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_07,00:06,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_117,Surveillance / Normal,Unknown incident,Ohio,Distressed,0.45,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Redbridge,Negative,Low,,Normal activity,CAVIAR_07,00:07,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_118,Surveillance / Normal,Unknown incident,"Omaha, Neb.",Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_07,00:08,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_119,Surveillance / Normal,Unknown incident,Ore.,Distressed,0.48,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Unknown,Positive,Low,,Normal activity,CAVIAR_07,00:09,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_120,Surveillance / Normal,Unknown incident,"Indianapolis, Ind.",Distressed,0.8,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal walking,CAVIAR_07,00:10,3 persons,0.41,N/A,N/A,N/A,N/A,N/A,N/A
+INC_121,Surveillance / Normal,Unknown incident,Unknown,Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Delhi,Negative,Low,,Normal walking,CAVIAR_07,00:11,2 persons,0.45,N/A,N/A,N/A,N/A,N/A,N/A
+INC_122,Surveillance / Normal,Unknown incident,Green Lake County,Distressed,0.7,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Chicago,Negative,Low,,Normal walking,CAVIAR_07,00:12,1 person,0.39,N/A,N/A,N/A,N/A,N/A,N/A
+INC_123,Surveillance / Normal,Unknown incident,Ohio,Distressed,0.45,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_07,00:13,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_124,Surveillance / Normal,Unknown incident,"Omaha, Neb.",Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_07,00:14,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_125,Surveillance / Normal,Unknown incident,Ore.,Distressed,0.48,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_10,00:06,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_126,Surveillance / Normal,Unknown incident,"Indianapolis, Ind.",Distressed,0.8,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_10,00:07,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_127,Surveillance / Normal,Unknown incident,Unknown,Distressed,0.5,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Redbridge,Negative,Low,,Normal activity,CAVIAR_10,00:11,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_128,Surveillance / Normal,Unknown incident,Green Lake County,Distressed,0.7,General Scene,none (0.50),0.5,Medium,Law Enforcement / Policing,Unknown,Negative,Low,,Normal activity,CAVIAR_10,00:14,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A
+INC_129,Surveillance / Normal,Unknown incident,Ohio,Distressed,0.45,General Scene,none (0.50),0.5,Low,Law Enforcement / Policing,Unknown,Positive,Low,,Normal activity,CAVIAR_10,00:17,no objects,0.0,N/A,N/A,N/A,N/A,N/A,N/A

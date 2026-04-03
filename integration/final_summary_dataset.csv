@@ -1,0 +1,130 @@
+Incident_ID,Source,Event,Location,Time,Severity
+INC_001,Audio + Image,Shooting / gunfire,"Panama City, Fla.",Reported,High
+INC_002,Audio + Image,Shooting / gunfire,"Greeleyville, Williamsburg County",Reported,High
+INC_003,Audio + Image,Shooting / gunfire,"Tucson, Ariz., U.S.",Reported,High
+INC_004,Audio + Image,Building fire / trapped persons,"Hyattsville, Md., Prince George’s County",Reported,High
+INC_005,Audio + Image,Shooting / gunfire,N/A,Reported,High
+INC_006,Audio + Image,Shooting / gunfire,"Panama City, Fla.",Reported,High
+INC_007,Audio + Image,Shooting / gunfire,"Greeleyville, Williamsburg County",Reported,High
+INC_008,Audio + Image,Shooting / gunfire,"Tucson, Ariz., U.S.",Reported,High
+INC_009,Audio + Image,Building fire / trapped persons,"Hyattsville, Md., Prince George’s County",Reported,High
+INC_010,Audio + Image,Shooting / gunfire,N/A,Reported,High
+INC_011,Audio + Image,Shooting / gunfire,"Panama City, Fla.",Reported,High
+INC_012,Audio + Image,Shooting / gunfire,"Greeleyville, Williamsburg County",Reported,High
+INC_013,Audio + Image,Shooting / gunfire,"Tucson, Ariz., U.S.",Reported,High
+INC_014,Audio + Image,Building fire / trapped persons,"Hyattsville, Md., Prince George’s County",Reported,High
+INC_015,Audio + Text,Robbery / theft,"Volusia County, Fla.",Reported,High
+INC_016,Text,Shooting,"Hoover, AL",Reported,High
+INC_017,Text,Shooting,N/A,Reported,High
+INC_018,Audio + Video + Text,Assault / fighting,Pakistan,00:01,High
+INC_019,Audio + Video + Text,Assault / fighting,N/A,00:02,High
+INC_020,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:04,High
+INC_021,Audio + Video + Text,Assault / fighting,N/A,00:05,High
+INC_022,Audio + Video + Text,Assault / fighting,Pakistan,00:06,High
+INC_023,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:08,High
+INC_024,Audio + Video + Text,Assault / fighting,Pakistan,00:09,High
+INC_025,Audio + Video + Text,Assault / fighting,N/A,00:10,High
+INC_026,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:11,High
+INC_027,Audio + Video + Text,Assault / fighting,N/A,00:12,High
+INC_028,Audio + Video + Text,Assault / fighting,Pakistan,00:01,High
+INC_029,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:06,High
+INC_030,Audio + Video + Text,Assault / fighting,Pakistan,00:07,High
+INC_031,Audio + Video + Text,Assault / fighting,N/A,00:08,High
+INC_032,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:12,High
+INC_033,Audio + Video + Text,Assault / fighting,N/A,00:15,High
+INC_034,Audio + Video + Text,Assault / fighting,Pakistan,00:21,High
+INC_035,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:22,High
+INC_036,Audio + Video + Text,Assault / fighting,Pakistan,00:23,High
+INC_037,Audio + Video + Text,Assault / fighting,N/A,00:28,High
+INC_038,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:02,High
+INC_039,Audio + Video + Text,Assault / fighting,N/A,00:03,High
+INC_040,Audio + Video + Text,Assault / fighting,Pakistan,00:04,High
+INC_041,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:12,High
+INC_042,Audio + Video + Text,Assault / fighting,Pakistan,00:13,High
+INC_043,Audio + Video + Text,Assault / fighting,N/A,00:16,High
+INC_044,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:17,High
+INC_045,Audio + Video + Text,Assault / fighting,N/A,00:18,High
+INC_046,Audio + Video + Text,Assault / fighting,Pakistan,00:19,High
+INC_047,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:20,High
+INC_048,Audio + Video + Text,Assault / fighting,Pakistan,00:01,High
+INC_049,Audio + Video + Text,Assault / fighting,N/A,00:04,High
+INC_050,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:05,High
+INC_051,Audio + Video + Text,Assault / fighting,N/A,00:06,High
+INC_052,Audio + Video + Text,Assault / fighting,Pakistan,00:08,High
+INC_053,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:09,High
+INC_054,Audio + Video + Text,Assault / fighting,Pakistan,00:10,High
+INC_055,Audio + Video + Text,Assault / fighting,N/A,00:12,High
+INC_056,Audio + Video + Text,Assault / fighting,"Arizona City, Ariz.",00:13,High
+INC_057,Audio + Video + Text,Assault / fighting,N/A,00:18,High
+INC_058,PDF,1033 Training Proposal,Hot Springs Airport.,"January 19, 2015",Low
+INC_059,PDF,1033 Training Proposal,the United States  Government,"January 14, 2015",Low
+INC_060,PDF,1033 Training Proposal,Lonoke County Sheriff’s Office,1 December 2015,Low
+INC_061,PDF,1033 Training Proposal,Lonoke County Sheriff’s Office,Unknown,Low
+INC_062,PDF,1033 Training Proposal,Lonoke County Sheriff’s Office,Unknown,Low
+INC_063,Audio,Road accident / collision,Orange County,Reported,High
+INC_064,Audio,Road accident / collision,Orange County,Reported,High
+INC_065,Audio,Road accident / collision,Orange County,Reported,High
+INC_066,Audio,Road accident / collision,Orange County,Reported,High
+INC_067,Audio,Road accident / collision,"Molokai, Hawaii",Reported,Medium
+INC_068,Video,Person lying down,N/A,00:01,Medium
+INC_069,Video,Person lying down,N/A,00:03,Medium
+INC_070,Video,Person lying down,N/A,00:09,Medium
+INC_071,Video,Person lying down,N/A,00:10,Medium
+INC_072,Video,Person lying down,N/A,00:11,Medium
+INC_073,Video,Person lying down,N/A,00:12,Medium
+INC_074,Video,Person lying down,N/A,00:26,Medium
+INC_075,Video,Person lying down,N/A,00:38,Medium
+INC_076,Video,Person lying down,N/A,00:39,Medium
+INC_077,Video,Person lying down,N/A,00:40,Medium
+INC_078,Video,Person collapsing,N/A,00:01,Medium
+INC_079,Video,Person collapsing,N/A,00:02,Medium
+INC_080,Video,Person lying down,N/A,00:03,Medium
+INC_081,Video,Person lying down,N/A,00:07,Medium
+INC_082,Video,Person lying down,N/A,00:08,Medium
+INC_083,Video,Person lying down,N/A,00:09,Medium
+INC_084,Video,Person lying down,N/A,00:10,Medium
+INC_085,Video,Person lying down,N/A,00:18,Medium
+INC_086,Video,Person lying down,N/A,00:19,Medium
+INC_087,Video,Person lying down,N/A,00:20,Medium
+INC_088,Video + Text,Loitering,Delhi,00:05,Low
+INC_089,Video + Text,Loitering,Delhi,00:06,Low
+INC_090,Video + Text,Loitering,Delhi,00:07,Low
+INC_091,Video + Text,Loitering,Delhi,00:32,Low
+INC_092,Video + Text,Loitering,Delhi,00:40,Low
+INC_093,Video + Text,Loitering,Delhi,00:41,Low
+INC_094,Video + Text,Loitering,Delhi,00:15,Low
+INC_095,Video + Text,Loitering,Delhi,00:02,Low
+INC_096,Video + Text,Loitering,Delhi,00:03,Low
+INC_097,Video + Text,Loitering,Delhi,00:04,Low
+INC_098,Video + Text,Loitering,Delhi,00:12,Low
+INC_099,Video + Text,Loitering,Delhi,00:13,Low
+INC_100,Text,Drug Crime,Baltimore,Reported,Medium
+INC_101,Text,Drug Crime,N/A,Reported,Medium
+INC_102,Audio + Image + Video + Text,Unknown incident,"Indianapolis, Ind.",00:01,Medium
+INC_103,Audio + Image + Video + Text,Unknown incident,N/A,00:02,Medium
+INC_104,Audio + Image + Video + Text,Unknown incident,Green Lake County,00:03,Medium
+INC_105,Audio + Image + Video + Text,Unknown incident,Ohio,00:36,Low
+INC_106,Audio + Image + Video + Text,Unknown incident,"Omaha, Neb.",00:01,Medium
+INC_107,Audio + Image + Video + Text,Unknown incident,Ore.,00:02,Low
+INC_108,Audio + Image + Video + Text,Unknown incident,"Indianapolis, Ind.",00:06,Medium
+INC_109,Audio + Image + Video + Text,Unknown incident,N/A,00:07,Medium
+INC_110,Audio + Image + Video + Text,Unknown incident,Green Lake County,00:19,Medium
+INC_111,Audio + Image + Video + Text,Unknown incident,Ohio,00:20,Low
+INC_112,Audio + Image + Video + Text,Unknown incident,"Omaha, Neb.",00:35,Medium
+INC_113,Audio + Image + Video + Text,Unknown incident,Ore.,00:36,Low
+INC_114,Audio + Image + Video + Text,Unknown incident,"Indianapolis, Ind.",00:56,Medium
+INC_115,Audio + Image + Video + Text,Unknown incident,N/A,00:57,Medium
+INC_116,Audio + Image + Video + Text,Unknown incident,Green Lake County,00:06,Medium
+INC_117,Audio + Image + Video + Text,Unknown incident,Ohio,00:07,Low
+INC_118,Audio + Image + Video + Text,Unknown incident,"Omaha, Neb.",00:08,Medium
+INC_119,Audio + Image + Video + Text,Unknown incident,Ore.,00:09,Low
+INC_120,Audio + Image + Video + Text,Unknown incident,"Indianapolis, Ind.",00:10,Medium
+INC_121,Audio + Image + Video + Text,Unknown incident,Delhi,00:11,Medium
+INC_122,Audio + Image + Video + Text,Unknown incident,Green Lake County,00:12,Medium
+INC_123,Audio + Image + Video + Text,Unknown incident,Ohio,00:13,Low
+INC_124,Audio + Image + Video + Text,Unknown incident,"Omaha, Neb.",00:14,Medium
+INC_125,Audio + Image + Video + Text,Unknown incident,Ore.,00:06,Low
+INC_126,Audio + Image + Video + Text,Unknown incident,"Indianapolis, Ind.",00:07,Medium
+INC_127,Audio + Image + Video + Text,Unknown incident,Redbridge,00:11,Medium
+INC_128,Audio + Image + Video + Text,Unknown incident,Green Lake County,00:14,Medium
+INC_129,Audio + Image + Video + Text,Unknown incident,Ohio,00:17,Low

@@ -1,0 +1,130 @@
+Incident_ID,Audio_Event,PDF_Doc_Type,Image_Objects,Video_Event,Text_Crime_Type,Severity
+INC_001,Shooting / gunfire,N/A,smoke (0.55),N/A,N/A,High
+INC_002,Shooting / gunfire,N/A,"fire, smoke, fire (0.68)",N/A,N/A,High
+INC_003,Shooting / gunfire,N/A,"fire, fire, smoke, smoke, fire (0.43)",N/A,N/A,High
+INC_004,Building fire / trapped persons,N/A,smoke (0.61),N/A,N/A,High
+INC_005,Shooting / gunfire,N/A,fire (0.57),N/A,N/A,High
+INC_006,Shooting / gunfire,N/A,"fire, smoke (0.68)",N/A,N/A,High
+INC_007,Shooting / gunfire,N/A,"smoke, smoke (0.47)",N/A,N/A,High
+INC_008,Shooting / gunfire,N/A,"smoke, smoke, smoke, smoke (0.69)",N/A,N/A,High
+INC_009,Building fire / trapped persons,N/A,smoke (0.75),N/A,N/A,High
+INC_010,Shooting / gunfire,N/A,"smoke, fire, fire, fire (0.46)",N/A,N/A,High
+INC_011,Shooting / gunfire,N/A,"fire, fire, fire (0.44)",N/A,N/A,High
+INC_012,Shooting / gunfire,N/A,"smoke, smoke (0.50)",N/A,N/A,High
+INC_013,Shooting / gunfire,N/A,"fire, fire, fire, fire, smoke (0.81)",N/A,N/A,High
+INC_014,Building fire / trapped persons,N/A,"fire, fire, smoke, fire, fire, fire, fire, smoke, smoke (0.54)",N/A,N/A,High
+INC_015,Robbery / theft,N/A,N/A,N/A,Robbery / Theft,High
+INC_016,N/A,N/A,N/A,N/A,Shooting,High
+INC_017,N/A,N/A,N/A,N/A,Shooting,High
+INC_018,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_019,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_020,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_021,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_022,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_023,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_024,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_025,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_026,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_027,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_028,Assault / fighting,N/A,N/A,Fighting,Assault / Violence,High
+INC_029,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_030,Assault / fighting,N/A,N/A,Fighting,Assault / Violence,High
+INC_031,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_032,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_033,Assault / fighting,N/A,N/A,Fighting,Assault / Violence,High
+INC_034,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_035,Assault / fighting,N/A,N/A,Fighting,Assault / Violence,High
+INC_036,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_037,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_038,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_039,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_040,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_041,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_042,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_043,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_044,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_045,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_046,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_047,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_048,Assault / fighting,N/A,N/A,Fighting,Assault / Violence,High
+INC_049,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_050,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_051,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_052,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_053,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_054,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_055,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_056,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_057,Assault / fighting,N/A,N/A,Aggressive posturing,Assault / Violence,High
+INC_058,N/A,1033 Training Proposal,N/A,N/A,N/A,Low
+INC_059,N/A,1033 Training Proposal,N/A,N/A,N/A,Low
+INC_060,N/A,1033 Training Proposal,N/A,N/A,N/A,Low
+INC_061,N/A,1033 Training Proposal,N/A,N/A,N/A,Low
+INC_062,N/A,1033 Training Proposal,N/A,N/A,N/A,Low
+INC_063,Road accident / collision,N/A,N/A,N/A,N/A,High
+INC_064,Road accident / collision,N/A,N/A,N/A,N/A,High
+INC_065,Road accident / collision,N/A,N/A,N/A,N/A,High
+INC_066,Road accident / collision,N/A,N/A,N/A,N/A,High
+INC_067,Road accident / collision,N/A,N/A,N/A,N/A,Medium
+INC_068,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_069,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_070,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_071,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_072,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_073,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_074,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_075,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_076,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_077,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_078,N/A,N/A,N/A,Person collapsing,N/A,Medium
+INC_079,N/A,N/A,N/A,Person collapsing,N/A,Medium
+INC_080,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_081,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_082,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_083,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_084,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_085,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_086,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_087,N/A,N/A,N/A,Person lying down,N/A,Medium
+INC_088,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_089,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_090,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_091,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_092,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_093,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_094,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_095,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_096,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_097,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_098,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_099,N/A,N/A,N/A,Loitering,Public Disturbance,Low
+INC_100,N/A,N/A,N/A,N/A,Drug Crime,Medium
+INC_101,N/A,N/A,N/A,N/A,Drug Crime,Medium
+INC_102,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_103,Unknown incident,N/A,none (0.50),Normal walking,Law Enforcement / Policing,Medium
+INC_104,Unknown incident,N/A,none (0.50),Normal walking,Law Enforcement / Policing,Medium
+INC_105,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Low
+INC_106,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_107,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Low
+INC_108,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_109,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_110,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_111,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Low
+INC_112,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_113,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Low
+INC_114,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_115,Unknown incident,N/A,none (0.50),Suspicious object,Law Enforcement / Policing,Medium
+INC_116,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_117,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Low
+INC_118,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_119,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Low
+INC_120,Unknown incident,N/A,none (0.50),Normal walking,Law Enforcement / Policing,Medium
+INC_121,Unknown incident,N/A,none (0.50),Normal walking,Law Enforcement / Policing,Medium
+INC_122,Unknown incident,N/A,none (0.50),Normal walking,Law Enforcement / Policing,Medium
+INC_123,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Low
+INC_124,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_125,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Low
+INC_126,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_127,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_128,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Medium
+INC_129,Unknown incident,N/A,none (0.50),Normal activity,Law Enforcement / Policing,Low
