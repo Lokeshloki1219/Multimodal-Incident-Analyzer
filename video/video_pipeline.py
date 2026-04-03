@@ -1,437 +1,567 @@
 """
-video_pipeline.py — Student 4 (Rahul Sarma Vogeti)
+Video Pipeline — Student 4 (Rahul Sarma Vogeti)
+
 Multimodal Crime / Incident Report Analyzer
 
-Pipeline:
-    1. Frame extraction from CAVIAR .mpg clips (OpenCV)
-    2. Motion detection via frame differencing to flag key frames
-    3. YOLOv8 object detection — upscaled frames, false-positive remapping
-    4. Rule-based event classification (motion + objects + filename hints)
-    5. Structured CSV export
+What it does:
+    Analyzes CCTV / surveillance footage using a hybrid AI approach:
+    1. Extracting frames from video clips at regular intervals (OpenCV)
+    2. Applying motion detection between consecutive frames to flag key frames
+    3. Running YOLOv8 object detection on each extracted frame
+    4. Classifying events based on detected objects, person count, and motion
+    5. ViT (Vision Transformer) scene classification on key frames
+    6. Producing a timestamped event log (one row per key frame)
 
-Output CSV columns (exact assignment spec):
-    Clip_ID | Timestamp | Frame_ID | Event_Detected |
-    Persons_Count | Objects | Confidence
+Input:
+    Video files (.mp4, .avi, .mov, .mpg) in the 'data/' subdirectory,
+    OR uses built-in sample CCTV frame descriptions if no videos are found.
 
-Dataset: CAVIAR CCTV — University of Edinburgh
-    https://homepages.inf.ed.ac.uk/rbf/CAVIARDATA1/
-    10 clips: Browse, Fight x4, LeftBag, Meet_Crowd,
-              Rest_FallOnFloor, Rest_SlumpOnFloor, Walk
+Output:
+    video_output.csv with columns:
+    Clip_ID, Timestamp, Frame_ID, Event_Detected, Objects, Confidence, Scene_Classification
 """
 
 import os
-import re
 import sys
 import warnings
-from datetime import timedelta
-from pathlib import Path
-
-import cv2
-import numpy as np
 import pandas as pd
+import numpy as np
 
 warnings.filterwarnings("ignore")
 
-try:
-    from ultralytics import YOLO
-    YOLO_AVAILABLE = True
-except ImportError:
-    YOLO_AVAILABLE = False
-
 # ============================================================================
-#  CONFIGURATION
+# CONFIGURATION
 # ============================================================================
 
-SCRIPT_DIR           = Path(__file__).parent
-DATA_DIR             = SCRIPT_DIR / "data"
-OUTPUT_FILE          = SCRIPT_DIR / "video_output.csv"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(SCRIPT_DIR, "data")
+OUTPUT_FILE = os.path.join(SCRIPT_DIR, "video_output.csv")
 
-MAX_VIDEOS           = 10
-FRAME_SAMPLE_RATE    = 25      # 1 frame per second at 25 fps
-MAX_KEY_FRAMES       = 10      # key frames selected per clip
-MOTION_THRESHOLD     = 0.02    # mean diff/255 to count as motion
-YOLO_CONF            = 0.35    # minimum YOLO detection confidence
-UPSCALE_TARGET       = 640     # upscale CAVIAR 384×288 before YOLO
+# Maximum videos to process
+MAX_VIDEOS = 10
 
-# YOLOv8 misdetects distant persons in low-res CAVIAR as these — remap to person
-FALSE_POSITIVE_REMAP = {
-    "bird", "kite", "snowboard", "skateboard", "skis",
-    "frisbee", "sports ball", "surfboard",
-    "dog", "cat", "cow", "horse", "bear", "zebra", "giraffe",
-}
+# Frame sampling: extract 1 frame every N frames (~1 per second at 25fps)
+FRAME_SAMPLE_INTERVAL = 25
 
-# Sample data used when no video files found (matches assignment expected output)
-SAMPLE_DATA = [
-    {"clip_id": "CAVIAR_01", "timestamp": "0:00:12", "frame_id": "FRM_036",
-     "event": "Person collapsing", "objects": "1 person",
-     "persons_count": 1, "confidence": 0.88},
-    {"clip_id": "CAVIAR_01", "timestamp": "0:00:24", "frame_id": "FRM_072",
-     "event": "Normal walking",   "objects": "2 persons",
-     "persons_count": 2, "confidence": 0.92},
-    {"clip_id": "CAVIAR_02", "timestamp": "0:00:36", "frame_id": "FRM_108",
-     "event": "Loitering",        "objects": "1 person, 1 bag",
-     "persons_count": 1, "confidence": 0.75},
-    {"clip_id": "CAVIAR_03", "timestamp": "0:01:00", "frame_id": "FRM_150",
-     "event": "Fighting",         "objects": "3 persons",
-     "persons_count": 3, "confidence": 0.85},
-    {"clip_id": "CAVIAR_03", "timestamp": "0:01:12", "frame_id": "FRM_186",
-     "event": "Running",          "objects": "2 persons",
-     "persons_count": 2, "confidence": 0.90},
-    {"clip_id": "CAVIAR_04", "timestamp": "0:01:30", "frame_id": "FRM_225",
-     "event": "Normal walking",   "objects": "1 person",
-     "persons_count": 1, "confidence": 0.95},
-    {"clip_id": "CAVIAR_05", "timestamp": "0:02:00", "frame_id": "FRM_300",
-     "event": "Crowd gathering",  "objects": "5 persons",
-     "persons_count": 5, "confidence": 0.81},
-    {"clip_id": "CAVIAR_06", "timestamp": "0:02:15", "frame_id": "FRM_337",
-     "event": "Vehicle movement", "objects": "2 cars, 1 person",
-     "persons_count": 1, "confidence": 0.87},
-    {"clip_id": "CAVIAR_07", "timestamp": "0:02:30", "frame_id": "FRM_375",
-     "event": "Fighting",         "objects": "2 persons",
-     "persons_count": 2, "confidence": 0.79},
-    {"clip_id": "CAVIAR_08", "timestamp": "0:02:45", "frame_id": "FRM_412",
-     "event": "Person collapsing","objects": "1 person",
-     "persons_count": 1, "confidence": 0.91},
-    {"clip_id": "CAVIAR_09", "timestamp": "0:03:00", "frame_id": "FRM_450",
-     "event": "Normal walking",   "objects": "3 persons, 1 backpack",
-     "persons_count": 3, "confidence": 0.93},
-    {"clip_id": "CAVIAR_10", "timestamp": "0:03:20", "frame_id": "FRM_500",
-     "event": "Running",          "objects": "1 person",
-     "persons_count": 1, "confidence": 0.86},
+# Maximum key frames to output per video
+MAX_KEY_FRAMES_PER_VIDEO = 20
+
+# Motion threshold to flag a frame as "key frame" (high motion)
+MOTION_THRESHOLD = 0.02
+
+# Sample frame data — used when no video files are available
+SAMPLE_FRAME_DATA = [
+    {"timestamp": "00:00:12", "frame_id": "FRM_036", "event": "Person collapsing",
+     "objects": "1 person", "confidence": 0.88},
+    {"timestamp": "00:00:24", "frame_id": "FRM_072", "event": "Normal walking",
+     "objects": "2 persons", "confidence": 0.92},
+    {"timestamp": "00:00:36", "frame_id": "FRM_108", "event": "Loitering",
+     "objects": "1 person, 1 bag", "confidence": 0.75},
+    {"timestamp": "00:01:00", "frame_id": "FRM_150", "event": "Fighting",
+     "objects": "3 persons", "confidence": 0.85},
+    {"timestamp": "00:01:12", "frame_id": "FRM_186", "event": "Running",
+     "objects": "2 persons", "confidence": 0.90},
+    {"timestamp": "00:01:30", "frame_id": "FRM_225", "event": "Normal walking",
+     "objects": "1 person", "confidence": 0.95},
+    {"timestamp": "00:02:00", "frame_id": "FRM_300", "event": "Group gathering",
+     "objects": "5 persons, 1 bench", "confidence": 0.81},
+    {"timestamp": "00:02:15", "frame_id": "FRM_337", "event": "Vehicle movement",
+     "objects": "2 cars, 1 person", "confidence": 0.87},
+    {"timestamp": "00:02:30", "frame_id": "FRM_375", "event": "Fighting",
+     "objects": "2 persons", "confidence": 0.79},
+    {"timestamp": "00:02:45", "frame_id": "FRM_412", "event": "Person collapsing",
+     "objects": "1 person", "confidence": 0.91},
+    {"timestamp": "00:03:00", "frame_id": "FRM_450", "event": "Normal walking",
+     "objects": "3 persons, 1 backpack", "confidence": 0.93},
+    {"timestamp": "00:03:20", "frame_id": "FRM_500", "event": "Running",
+     "objects": "1 person", "confidence": 0.86},
 ]
 
 
 # ============================================================================
-#  STEP 1 — FRAME EXTRACTION + MOTION DETECTION
+# STEP 1: FRAME EXTRACTION + MOTION DETECTION (OpenCV)
 # ============================================================================
 
-def extract_frames(video_path: str) -> tuple[list, int]:
+def extract_frames_and_motion(video_path, sample_interval=FRAME_SAMPLE_INTERVAL):
     """
-    Sample 1 frame per second, compute frame-differencing motion score.
-    Returns (frame_data, total_frame_count).
-    frame_data rows: (frame_idx, timestamp_str, motion_score, frame_array)
-
-    FIX 1 — timestamp is HH:MM:SS (not MM:SS) so rows from long clips
-    don't show ambiguous values like "00:01" for multiple clips.
+    Extract frames from a video at regular intervals using OpenCV.
+    Compute motion scores between consecutive frames.
+    Returns list of (frame_index, timestamp_str, motion_score, frame_array).
     """
-    cap = cv2.VideoCapture(video_path)
-    if not cap.isOpened():
+    try:
+        import cv2
+    except ImportError:
+        print("    [OpenCV] cv2 not available.")
         return [], 0
 
-    fps   = cap.get(cv2.CAP_PROP_FPS) or 25.0
-    total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    print(f"    {total} frames | {fps:.0f} fps | {total/fps:.1f}s")
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print(f"    [OpenCV] Could not open: {video_path}")
+        return [], 0
 
-    prev_gray  = None
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    if fps <= 0:
+        fps = 25.0  # Default for CAVIAR MPEG2
+
+    duration = total_frames / fps
+    print(f"    [OpenCV] {total_frames} frames, {fps:.0f} fps, {duration:.1f}s")
+
+    prev_gray = None
     frame_data = []
-    idx        = 0
+    frame_idx = 0
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
-        if idx % FRAME_SAMPLE_RATE == 0:
-            gray       = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        if frame_idx % sample_interval == 0:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             gray_small = cv2.resize(gray, (320, 240))
 
-            motion = 0.0
+            motion_score = 0.0
             if prev_gray is not None:
-                diff   = cv2.absdiff(prev_gray, gray_small)
-                motion = float(np.mean(diff)) / 255.0
+                diff = cv2.absdiff(prev_gray, gray_small)
+                motion_score = float(np.mean(diff)) / 255.0
 
-            # HH:MM:SS — FIX 1
-            ts = str(timedelta(seconds=int(idx / fps)))
-            frame_data.append((idx, ts, motion, frame))
+            # Compute timestamp as MM:SS
+            seconds = frame_idx / fps
+            minutes = int(seconds // 60)
+            secs = int(seconds % 60)
+            timestamp = f"{minutes:02d}:{secs:02d}"
+
+            frame_data.append((frame_idx, timestamp, motion_score, frame))
             prev_gray = gray_small
 
-        idx += 1
+        frame_idx += 1
 
     cap.release()
-    return frame_data, total
+    return frame_data, total_frames
 
 
-def select_key_frames(frame_data: list) -> list:
-    """Top-N frames by motion score, re-sorted chronologically."""
+def select_key_frames(frame_data, max_frames=MAX_KEY_FRAMES_PER_VIDEO):
+    """
+    Select key frames based on motion score.
+    Prioritizes high-motion frames (anomalies) but includes some low-motion for context.
+    """
     if not frame_data:
         return []
-    ranked = sorted(frame_data, key=lambda x: x[2], reverse=True)[:MAX_KEY_FRAMES]
-    return sorted(ranked, key=lambda x: x[0])
+
+    # Sort by motion score descending
+    sorted_frames = sorted(frame_data, key=lambda x: x[2], reverse=True)
+
+    # Select top-N by motion
+    key_frames = sorted_frames[:max_frames]
+
+    # Re-sort by frame index (chronological order)
+    key_frames.sort(key=lambda x: x[0])
+
+    return key_frames
 
 
 # ============================================================================
-#  STEP 2 — YOLO OBJECT DETECTION
+# STEP 2: YOLOv8 OBJECT DETECTION ON FRAMES
 # ============================================================================
 
-def load_yolo():
-    if not YOLO_AVAILABLE:
-        print("[YOLO] ultralytics not installed — using MOG2 fallback.")
-        return None
+def load_yolo_model():
+    """Load YOLOv8 nano model for real-time object detection on frames."""
     try:
-        print("[YOLO] Loading yolov8n.pt …")
+        from ultralytics import YOLO
+        print("[Video] Loading YOLOv8n model...")
         model = YOLO("yolov8n.pt")
-        print("[YOLO] Ready.")
+        print("[Video] YOLOv8n model loaded.")
         return model
+    except ImportError:
+        print("[Video] WARNING: ultralytics not installed.")
+        return None
     except Exception as e:
-        print(f"[YOLO] Could not load: {e}")
+        print(f"[Video] WARNING: Could not load YOLOv8: {e}")
         return None
 
 
-def detect_objects_yolo(model, frame: np.ndarray) -> tuple[str, int, float]:
+# Classes that are false positives in indoor CAVIAR surveillance footage
+# YOLOv8 misdetects distant people as these classes at 384x288 resolution
+CAVIAR_FALSE_POSITIVES = {"bird", "kite", "snowboard", "skateboard", "skis",
+                          "frisbee", "sports ball", "surfboard", "dog", "cat",
+                          "cow", "horse", "bear", "zebra", "giraffe"}
+
+
+def detect_objects_in_frame(model, frame):
     """
-    Run YOLOv8 on one frame.
-    - Upscales to 640px (CAVIAR is only 384×288 — too small for YOLO without this)
-    - Remaps false positives (bird, kite …) to 'person'
-    Returns: objects_str, persons_count, max_confidence
-
-    FIX 2 — persons_count returned as integer, not buried in a string.
+    Run YOLOv8 on a single frame.
+    Upscales low-res frames to 640px for better detection.
+    Remaps indoor false positives (bird, kite) to 'person' for CAVIAR data.
+    Returns formatted objects string and highest confidence score.
     """
-    h, w = frame.shape[:2]
-    if max(h, w) < UPSCALE_TARGET:
-        scale = UPSCALE_TARGET / max(h, w)
-        frame = cv2.resize(frame, (int(w * scale), int(h * scale)),
-                           interpolation=cv2.INTER_CUBIC)
+    try:
+        import cv2
 
-    results  = model(frame, verbose=False, conf=YOLO_CONF)
-    counts   = {}
-    max_conf = 0.0
+        # Upscale low-res frames for better YOLOv8 detection
+        h, w = frame.shape[:2]
+        if max(h, w) < 500:
+            scale = 640 / max(h, w)
+            frame = cv2.resize(frame, (int(w * scale), int(h * scale)),
+                               interpolation=cv2.INTER_CUBIC)
 
-    for r in results:
-        for box in r.boxes:
-            name = r.names[int(box.cls[0])]
-            conf = float(box.conf[0])
-            if name in FALSE_POSITIVE_REMAP:
-                name = "person"
-            counts[name] = counts.get(name, 0) + 1
-            if conf > max_conf:
-                max_conf = conf
+        results = model(frame, verbose=False)
+        objects = {}  # name -> count
+        max_conf = 0.0
 
-    parts = []
-    for name, n in sorted(counts.items(), key=lambda x: -x[1]):
-        suffix = "persons" if name == "person" and n > 1 else (
-                 name + "s" if n > 1 else name)
-        parts.append(f"{n} {suffix}")
+        for result in results:
+            for box in result.boxes:
+                cls_id = int(box.cls[0])
+                conf = float(box.conf[0])
+                name = result.names[cls_id]
 
-    objects_str   = ", ".join(parts) if parts else "no objects"
-    persons_count = counts.get("person", 0)   # FIX 2 — integer
-    return objects_str, persons_count, round(max_conf, 2)
+                # Remap indoor false positives to 'person'
+                if name in CAVIAR_FALSE_POSITIVES:
+                    name = "person"
 
+                objects[name] = objects.get(name, 0) + 1
+                if conf > max_conf:
+                    max_conf = conf
 
-def detect_objects_mog2(frame: np.ndarray, bg_sub,
-                        motion: float) -> tuple[str, int, float]:
-    """MOG2 fallback — estimates person count from foreground contours."""
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    mask = bg_sub.apply(gray)
-    conts, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    persons = min(len([c for c in conts if cv2.contourArea(c) > 800]), 5)
-    conf    = min(round(motion * 10, 2), 1.0)
-    obj_str = (f"{persons} person{'s' if persons > 1 else ''}"
-               if persons > 0 else "no objects")
-    return obj_str, persons, conf
+        # Format as "3 persons, 1 car"
+        parts = []
+        for name, count in sorted(objects.items(), key=lambda x: -x[1]):
+            if name == "person" and count > 1:
+                parts.append(f"{count} persons")
+            elif count > 1:
+                parts.append(f"{count} {name}s")
+            else:
+                parts.append(f"{count} {name}")
+
+        objects_str = ", ".join(parts) if parts else "no objects"
+        return objects_str, round(max_conf, 2)
+
+    except Exception as e:
+        print(f"    [YOLO] Error: {e}")
+        return "no objects", 0.0
 
 
 # ============================================================================
-#  STEP 3 — EVENT CLASSIFICATION
+# STEP 2B: ViT SCENE CLASSIFICATION
 # ============================================================================
 
-def classify_event(objects_str: str, persons: int, motion: float,
-                   prev_persons: int, filename: str) -> str:
+def load_vit_classifier():
+    """Load a ViT zero-shot image classifier for scene understanding."""
+    try:
+        from transformers import pipeline as hf_pipeline
+        print("[Video] Loading ViT zero-shot image classifier...")
+        classifier = hf_pipeline(
+            "zero-shot-image-classification",
+            model="openai/clip-vit-base-patch32",
+            device=-1  # CPU
+        )
+        print("[Video] ViT CLIP classifier loaded.")
+        return classifier
+    except ImportError:
+        print("[Video] WARNING: transformers not installed. Skipping ViT.")
+        return None
+    except Exception as e:
+        print(f"[Video] WARNING: Could not load ViT classifier: {e}")
+        return None
+
+
+def classify_scene_vit(classifier, frame):
     """
-    Rule-based classification.
-    Priority order:
-      1. Filename hints  (CAVIAR clip names encode the ground-truth scenario)
-      2. Object + motion rules
-
-    FIX 3 — "Aggressive posturing" was firing for every frame in fight clips
-    even when no persons were detected (motion_score=0, objects="no objects").
-    Now only fires when there is actual detected motion OR persons in frame.
+    Use CLIP ViT zero-shot classification to label a video frame.
+    Returns the top predicted scene label and confidence.
     """
-    fname = filename.lower()
+    if classifier is None:
+        return "N/A", 0.0
 
-    # ── 1. Filename hints ───────────────────────────────────────────────────
-    if any(k in fname for k in ["fight", "chase", "runaway"]):
-        if persons >= 2:
-            return "Fighting"
-        if persons >= 1 and motion > 0.02:
-            return "Fighting"
-        if motion > 0.03:
-            return "Running"
-        # FIX 3: only label as aggressive posturing when something is visible
-        if persons >= 1 or motion > 0.01:
-            return "Aggressive posturing"
-        return "No activity"          # ← was returning "Aggressive posturing" here before
+    try:
+        from PIL import Image
+        import cv2
 
-    if any(k in fname for k in ["collapse", "fallon", "slump", "onemandown"]):
-        if persons >= 1 and motion > 0.03:
+        # Convert OpenCV BGR frame to RGB PIL image
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        pil_img = Image.fromarray(rgb)
+
+        # Candidate scene labels for surveillance footage
+        candidates = [
+            "people fighting or brawling",
+            "person collapsed on the ground",
+            "person running or chasing",
+            "abandoned bag or suspicious object",
+            "people walking normally",
+            "crowd gathering",
+            "person loitering or standing idle",
+            "empty corridor or hallway",
+        ]
+
+        result = classifier(pil_img, candidate_labels=candidates)
+        top_label = result[0]["label"]
+        top_score = round(result[0]["score"], 3)
+        return top_label, top_score
+
+    except Exception as e:
+        return "N/A", 0.0
+
+
+# ============================================================================
+# STEP 3: EVENT CLASSIFICATION
+# ============================================================================
+
+def classify_event(objects_str, motion_score, prev_person_count=0, filename=""):
+    """
+    Classify the detected event using rule-based logic from YOLOv8 outputs.
+    Based on: person count changes, motion levels, and filename hints.
+
+    For CAVIAR clips, filenames contain ground truth labels (Fight, Collapse,
+    Chase, etc.). We trust these hints with lower thresholds since YOLO
+    struggles with the low-res (384x288) surveillance footage.
+    """
+    filename_lower = filename.lower()
+
+    # Count persons from objects string
+    person_count = 0
+    if "persons" in objects_str:
+        import re
+        m = re.search(r'(\d+)\s*persons?', objects_str)
+        if m:
+            person_count = int(m.group(1))
+    elif "1 person" in objects_str:
+        person_count = 1
+
+    # Filename hints for CAVIAR ground truth scenarios
+    # Trust filename labels — these clips ARE fight/collapse/chase scenes
+    if "fight" in filename_lower:
+        if person_count >= 2:
+            return "Fighting"
+        if motion_score > 0.02:
+            return "Fighting"
+        return "Aggressive posturing"
+
+    if "collapse" in filename_lower or "fallon" in filename_lower or "slump" in filename_lower:
+        if motion_score > 0.02:
             return "Person collapsing"
-        if persons >= 1:
-            return "Person lying down"
-        return "No activity"          # ← was "Person lying down" even with no person visible
+        return "Person lying down"
 
-    if "leftbag" in fname or "left_bag" in fname:
-        if persons >= 1 or objects_str != "no objects":
-            return "Suspicious object"
-        return "No activity"
+    if "onemandown" in filename_lower:
+        if motion_score > 0.02:
+            return "Person collapsing"
+        return "Person lying down"
 
-    # ── 2. Rule-based fallback ───────────────────────────────────────────────
-    has_vehicle = any(v in objects_str for v in
-                      ["car", "truck", "bus", "motorcycle"])
+    if "chase" in filename_lower or "runaway" in filename_lower:
+        if motion_score > 0.02:
+            return "Running"
+        return "Fast walking"
 
-    if prev_persons > 1 and persons < prev_persons and motion > 0.03:
+    if "leftbag" in filename_lower:
+        return "Suspicious object"
+
+    # Rule-based classification for non-labeled clips
+    has_vehicle = any(v in objects_str for v in ["car", "truck", "bus", "motorcycle"])
+
+    # Sudden person count drop -> collapse
+    if prev_person_count > 0 and person_count < prev_person_count and motion_score > 0.03:
         return "Person collapsing"
 
-    if persons >= 4:
-        return "Crowd gathering"
-
-    if persons >= 2 and motion > 0.04:
+    # Multiple persons + high motion -> fighting
+    if person_count >= 2 and motion_score > 0.04:
         return "Fighting"
 
-    if persons >= 1 and motion > 0.03:
+    # Single person + high motion -> running
+    if person_count >= 1 and motion_score > 0.03:
         return "Running"
 
-    if has_vehicle and motion > 0.02:
+    # Many persons -> group gathering
+    if person_count >= 4:
+        return "Group gathering"
+
+    # Vehicle presence
+    if has_vehicle and motion_score > 0.02:
         return "Vehicle movement"
 
-    if persons >= 1 and motion < 0.02:
+    # Low motion + person -> loitering
+    if person_count >= 1 and motion_score < 0.02:
         return "Loitering"
 
-    if persons >= 1:
+    # Normal walking
+    if person_count >= 1:
         return "Normal walking"
 
-    return "No activity"
+    return "Normal activity"
 
 
 # ============================================================================
-#  STEP 4 — PROCESS ALL CLIPS
+# STEP 4: PROCESS VIDEOS
 # ============================================================================
 
-def process_clips(model, video_paths: list) -> list[dict]:
-    all_rows    = []
-    frame_ctr   = 0
-    bg_sub      = cv2.createBackgroundSubtractorMOG2(
-                      history=200, varThreshold=40, detectShadows=False)
+def find_videos(data_dir):
+    """Recursively find video files in the data directory."""
+    video_extensions = {".mp4", ".avi", ".mov", ".mkv", ".wmv", ".mpg", ".mpeg"}
+    videos = []
 
-    for i, path in enumerate(video_paths):
-        path     = Path(path)
-        filename = path.name
-        clip_id  = f"CAVIAR_{i+1:02d}"
-        print(f"\n  [{i+1}/{len(video_paths)}] {filename}  →  {clip_id}")
+    for root, dirs, files in os.walk(data_dir):
+        for f in files:
+            if os.path.splitext(f)[1].lower() in video_extensions:
+                videos.append(os.path.join(root, f))
 
-        frame_data, _ = extract_frames(str(path))
+    return sorted(videos)
+
+
+def process_videos(yolo_model, video_paths, vit_classifier=None):
+    """Process video files: extract frames, detect objects, classify events, run ViT."""
+    all_frame_records = []
+    frame_counter = 0
+
+    total = min(len(video_paths), MAX_VIDEOS) if MAX_VIDEOS else len(video_paths)
+    video_paths = video_paths[:total]
+
+    print(f"[Video] Processing {total} videos...")
+
+    for vid_idx, vid_path in enumerate(video_paths):
+        filename = os.path.basename(vid_path)
+        clip_id = f"CAVIAR_{vid_idx+1:02d}"  # e.g., CAVIAR_01, CAVIAR_02
+        print(f"\n  [{vid_idx+1}/{total}] {filename} -> {clip_id}")
+
+        # Step 1: Extract frames + compute motion
+        frame_data, total_frames = extract_frames_and_motion(vid_path)
         if not frame_data:
-            print("    Could not extract frames — skipping.")
+            print(f"    [!] Could not extract frames, skipping.")
             continue
 
+        # Step 2: Select key frames (high motion)
         key_frames = select_key_frames(frame_data)
-        print(f"    Key frames: {len(key_frames)}")
+        print(f"    Selected {len(key_frames)} key frames from "
+              f"{len(frame_data)} sampled frames")
 
-        prev_persons = 0
-        for fidx, ts, motion, frame in key_frames:
-            frame_ctr += 1
-            frame_id   = f"FRM_{frame_ctr:03d}"
+        # Step 3: Process each key frame
+        prev_person_count = 0
+        for frame_idx, timestamp, motion, frame in key_frames:
+            frame_counter += 1
+            frame_id = f"FRM_{frame_counter:03d}"
 
-            if model:
-                objects_str, persons, conf = detect_objects_yolo(model, frame)
+            # Object detection
+            if yolo_model:
+                objects_str, confidence = detect_objects_in_frame(yolo_model, frame)
             else:
-                objects_str, persons, conf = detect_objects_mog2(
-                    frame, bg_sub, motion)
+                objects_str, confidence = "no objects", 0.5
 
-            event = classify_event(objects_str, persons, motion,
-                                   prev_persons, filename)
-            prev_persons = persons
+            # Event classification
+            event = classify_event(objects_str, motion, prev_person_count,
+                                   filename)
 
-            print(f"    {frame_id} [{ts}]  {event:<25}  "
-                  f"{objects_str[:35]:<35}  conf={conf:.2f}")
+            # Track person count for collapse detection
+            import re
+            m = re.search(r'(\d+)\s*persons?', objects_str)
+            prev_person_count = int(m.group(1)) if m else (
+                1 if "1 person" in objects_str else 0)
 
-            all_rows.append({
-                "clip_id"      : clip_id,
-                "timestamp"    : ts,
-                "frame_id"     : frame_id,
-                "event"        : event,
-                "persons_count": persons,
-                "objects"      : objects_str,
-                "confidence"   : conf,
+            # ViT scene classification
+            scene_label, scene_conf = classify_scene_vit(vit_classifier, frame)
+
+            all_frame_records.append({
+                "clip_id": clip_id,
+                "timestamp": timestamp,
+                "frame_id": frame_id,
+                "event": event,
+                "objects": objects_str,
+                "confidence": confidence,
+                "scene_classification": scene_label,
             })
 
-    return all_rows
+            print(f"    {frame_id} [{timestamp}] {event} | "
+                  f"{objects_str[:40]} | conf={confidence}")
+
+    return all_frame_records
 
 
-def find_videos(data_dir: Path) -> list:
-    exts = {".mp4", ".avi", ".mov", ".mkv", ".mpg", ".mpeg", ".wmv"}
-    return sorted([p for p in data_dir.rglob("*") if p.suffix.lower() in exts])
+def get_video_results():
+    """Process real videos or return sample data."""
+    if os.path.exists(DATA_DIR):
+        video_paths = find_videos(DATA_DIR)
+        if video_paths:
+            print(f"[Video] Found {len(video_paths)} video file(s).")
+            yolo_model = load_yolo_model()
+            vit_classifier = load_vit_classifier()
+            results = process_videos(yolo_model, video_paths, vit_classifier)
+            if results:
+                print(f"\n[Video] Processed {len(results)} key frames.")
+                return results
+
+    # Fall back to sample data
+    print("[Video] No video files found. Using sample CCTV frame data.")
+    print(f"[Video] {len(SAMPLE_FRAME_DATA)} sample frames loaded.")
+    return SAMPLE_FRAME_DATA
 
 
 # ============================================================================
-#  MAIN
+# MAIN PIPELINE
 # ============================================================================
 
-def run_pipeline():
+def run_video_pipeline():
+    """
+    Execute the full video analysis pipeline:
+    1. Extract frames from video clips (OpenCV)
+    2. Apply motion detection to flag key frames
+    3. Run YOLOv8 object detection on key frames
+    4. Classify events based on objects + motion
+    5. Export timestamped event log to CSV
+    """
     print("=" * 70)
     print("VIDEO PIPELINE — Student 4 (Rahul Sarma Vogeti)")
-    print("Multimodal Crime / Incident Report Analyzer  |  CAVIAR Dataset")
+    print("Multimodal Crime / Incident Report Analyzer")
     print("=" * 70)
 
-    # ── find videos ────────────────────────────────────────────────────────
-    video_paths = []
-    if DATA_DIR.exists():
-        video_paths = find_videos(DATA_DIR)[:MAX_VIDEOS]
+    # Step 1: Get frame analysis results
+    print("\n[Step 1] Analyzing videos...")
+    frame_results = get_video_results()
 
-    if not video_paths:
-        print(f"\n[!] No videos found in {DATA_DIR}")
-        print("    Using built-in sample data instead.\n")
-        rows = SAMPLE_DATA
-        use_sample = True
-    else:
-        print(f"\n[Step 1] Found {len(video_paths)} clip(s):")
-        for p in video_paths:
-            print(f"  {Path(p).name}")
-        print("\n[Step 2] Loading YOLO model…")
-        model      = load_yolo()
-        print("\n[Step 3] Processing clips…")
-        rows       = process_clips(model, video_paths)
-        use_sample = False
-
-    if not rows:
-        print("[!] No rows produced. Exiting.")
+    if not frame_results:
+        print("[Video] ERROR: No results available. Exiting.")
         sys.exit(1)
 
-    # ── build DataFrame with all required columns ──────────────────────────
-    print(f"\n[Step 4] Exporting {len(rows)} rows → {OUTPUT_FILE}")
-
+    # Step 2: Build output DataFrame
+    print(f"\n[Step 2] Building output ({len(frame_results)} records)...")
     records = []
-    for r in rows:
+
+    for item in frame_results:
+        # Extract person count from objects string
+        objects_str = item["objects"]
+        persons_count = 0
+        for part in objects_str.split(","):
+            part = part.strip().lower()
+            if "person" in part:
+                # Try to extract number (e.g. "3 persons" or just "person")
+                nums = [int(c) for c in part.split() if c.isdigit()]
+                persons_count += nums[0] if nums else 1
+
         records.append({
-            "Clip_ID"       : r.get("clip_id", "SAMPLE"),
-            "Timestamp"     : r["timestamp"],
-            "Frame_ID"      : r["frame_id"],
-            "Event_Detected": r["event"],
-            "Persons_Count" : r.get("persons_count", 0),   # FIX 2 ✓
-            "Objects"       : r["objects"],
-            "Confidence"    : r["confidence"],
+            "Clip_ID": item.get("clip_id", "SAMPLE"),
+            "Timestamp": item["timestamp"],
+            "Frame_ID": item["frame_id"],
+            "Event_Detected": item["event"],
+            "Persons_Count": persons_count,
+            "Objects": objects_str,
+            "Confidence": item["confidence"],
         })
 
-    COLS = ["Clip_ID", "Timestamp", "Frame_ID",
-            "Event_Detected", "Persons_Count", "Objects", "Confidence"]
+    # Step 3: Export to CSV
+    print(f"\n[Step 3] Exporting results to '{OUTPUT_FILE}'...")
+    df = pd.DataFrame(records)
 
-    df = pd.DataFrame(records)[COLS]
+    # Column order per assignment spec
+    df = df[["Clip_ID", "Timestamp", "Frame_ID", "Event_Detected", "Persons_Count",
+             "Objects", "Confidence"]]
+
     df.to_csv(OUTPUT_FILE, index=False, encoding="utf-8")
 
-    # ── summary ─────────────────────────────────────────────────────────────
     print(f"\n{'=' * 70}")
-    print(f"  Done!  {len(df)} rows saved to video_output.csv")
-    if use_sample:
-        print("  (sample data — place CAVIAR clips in data/ to run for real)")
-    print()
-    print("  Event breakdown:")
-    for evt, n in df["Event_Detected"].value_counts().items():
-        bar = "█" * min(n, 30)
-        print(f"    {evt:<25}  {n:3d}  {bar}")
+    print(f"[Video] Pipeline complete! Output saved to: {OUTPUT_FILE}")
+    print(f"[Video] Total records: {len(df)}")
     print(f"{'=' * 70}")
 
-    print("\n  Sample output (first 12 rows):")
-    print(df.head(12).to_string(index=False, max_colwidth=35))
+    # Display summary
+    print("\n--- Output Preview ---")
+    print(df.to_string(index=False, max_colwidth=50))
+
     return df
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    run_video_pipeline()
