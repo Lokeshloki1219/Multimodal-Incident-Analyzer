@@ -1,4 +1,4 @@
-# 📝 Text Pipeline — Student 5 (Swet Doshi)
+# 📝 Text Pipeline — Student 5 (Swet Vimalkumar Patel)
 
 ## Overview
 

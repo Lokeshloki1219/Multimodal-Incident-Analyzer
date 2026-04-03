@@ -14,7 +14,7 @@ An AI-powered system that ingests five types of unstructured crime data — 911 
 | **Neha Reddy Poreddy** | Document Analyst | `pdf/` | PyMuPDF, pytesseract OCR, spaCy NER |
 | **Nagraj V Vallakati** | Image Analyst | `images/` | YOLOv8 (fine-tuned + COCO), ViT, pytesseract |
 | **Rahul Sarma Vogeti** | Video Analyst | `video/` | YOLOv8, OpenCV, CLIP ViT |
-| **Swet Doshi** | Text Analyst | `text/` | Zero-shot classification, spaCy NER |
+| **Swet Vimalkumar Patel** | Text Analyst | `text/` | Zero-shot classification, spaCy NER |
 
 ---
 

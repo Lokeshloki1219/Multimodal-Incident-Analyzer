@@ -1,5 +1,5 @@
 """
-Text/NLP Pipeline — Student 5 (Swet Doshi)
+Text/NLP Pipeline — Student 5 (Swet Vimalkumar Patel)
 
 Multimodal Crime / Incident Report Analyzer
 
@@ -503,7 +503,7 @@ def run_text_pipeline():
     5. Export to CSV
     """
     print("=" * 70)
-    print("TEXT/NLP PIPELINE — Student 5 (Swet Doshi)")
+    print("TEXT/NLP PIPELINE — Student 5 (Swet Vimalkumar Patel)")
     print("Multimodal Crime / Incident Report Analyzer")
     print("=" * 70)
 
